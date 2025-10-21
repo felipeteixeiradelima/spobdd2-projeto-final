@@ -1,0 +1,50 @@
+:root {
+  --vermelho-principal: #b22222;
+  --bege-claro: #f8e8d8;
+  --bege-fundo: #fffaf5;
+}
+
+.bg-bege {
+  background-color: var(--bege-claro) !important;
+}
+
+.text-bege {
+  color: var(--bege-claro) !important;
+}
+
+.navbar .nav-link {
+  color: #7a3a3a !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  color: var(--vermelho-principal) !important;
+}
+
+#hero img {
+  height: 70vh;
+  object-fit: cover;
+}
+
+.carousel-caption h2 {
+  font-size: 2.5rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+#estatisticas .card {
+  background-color: var(--bege-fundo);
+  border-radius: 12px;
+}
+
+.btn-danger {
+  background-color: var(--vermelho-principal);
+  border-color: var(--vermelho-principal);
+}
+
+.btn-danger:hover {
+  background-color: #8b1a1a;
+}
+
+footer a:hover {
+  color: var(--bege-claro);
+}
