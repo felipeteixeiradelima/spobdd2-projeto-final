@@ -71,6 +71,45 @@
             <label for="email" class="form-label">E-mail</label>
             <input type="email" id="email" name="email" class="form-control" required>
           </div>
+
+          <div class="col-md-6">
+            <label for="senha" class="form-label">Senha</label>
+            <input 
+              type="password" 
+              id="senha" 
+              name="senha" 
+              class="form-control" 
+              required 
+              minlength="8" 
+              maxlength="20"
+              pattern="^[A-Za-z0-9@_\*\-\.\#!\$%&\+=\?\^~]{8,20}$"
+              title="A senha deve ter entre 8 e 20 caracteres e pode conter letras (maiúsculas/minúsculas) e os símbolos @, _ e *">
+          </div>
+        
+          <div class="col-md-6">
+            <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+            <input 
+              type="password" 
+              id="confirmarSenha" 
+              name="confirmarSenha" 
+              class="form-control"
+              required 
+              minlength="8" 
+              maxlength="20">
+          </div>
+
+          <div class="mt-3">
+            <div id="senhaInvalida" class="text-danger m3-2" style="display:none;">
+              A senha digitada é inválida.
+            </div>
+            <div id="senhasDiferentes" class="text-danger m3-2" style="display:none;">
+              As senhas não coincidem.
+            </div>
+            <small id="senhaHelp" class="text-muted">
+              A senha deve ter de 8 a 20 caracteres, podendo ser letras (maiúsculas/minúsculas) e caracteres especiais.
+            </small>
+          </div>
+
         </div>
 
         <hr class="my-4">
@@ -165,7 +204,7 @@
   <script src="https://unpkg.com/imask"></script>
 
   <!-- Script JS personalizado -->
-  <script src="js/login-cadastro-mask.js"></script>
+  <script src="js/login-cadastro.js"></script>
 
 </body>
 </html>
