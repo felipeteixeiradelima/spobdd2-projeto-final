@@ -1,8 +1,61 @@
+// ======== VARIÁVEIS GLOBAIS =========
+var numCadastros = localStorage.length;
+var usuarioLogado = localStorage.getItem("usuarioLogado");
+console.log(numCadastros)
+console.log(usuarioLogado)
+
+// ======== SISTEMA DE LOGIN USANDO LOCAL STORAGE =========
+window.addEventListener("storage", (event) => {
+  if (event.key === "usuarioLogado") {
+    atualizarUsuarioLogado()
+  }
+})
+
+function fazerLogin () {
+  const cpfInput = document.getElementById("cpf");
+  const senhaInput = document.getElementById("senha");
+  let isCredenciaisValidas = false;
+
+  for (let i = 0; i < numCadastros & !isCredenciaisValidas; i++) {
+    let cadastro = localStorage.getItem(`cadastro${i}`);
+    
+    if (cpfInput.value === cadastro.cpf & senhaInput.value === cadastro.senha) {
+      isCredenciaisValidas = true;
+    }
+  }
+
+  if (!isCredenciaisValidas) {
+    senhaInput.setCustomValidity("Senha incorreta.");
+    return;
+  }
+
+  localStorage.setItem("cpfLogado", cpfInput.value);
+}
+
+function atualizarUsuarioLogado () {
+  usuarioLogado = localStorage("cpfLogado");
+  console.log(usuarioLogado);
+}
+
+// ======== SISTEMA DE CADASTRO USANDO LOCAL STORAGE =========
+
+function cadastrar () {
+  const url = window.location.split("/").slice(1);
+  const cpfInput = document.getElementById("cpf");
+  const senhaInput = document.getElementById("senha");
+
+  localStorage.setItem(`cadastro${numCadastros}`, {"cpf": cpfInput.value, "senha": senhaInput.value});
+  numCadastros++;
+  window.location.href = "index.html"
+  
+  console.log(localStorage.getItem(`cadastro${numCadastros}`))
+}
+
 // ======== FORMATAÇÃO DE CAMPOS =========
 
 // CPF
 function formatarCPF() {
-  const cpf = document.getElementById('cpf')
+  const cpf = document.getElementById('cpf');
   if (cpf) {
     IMask(cpf, {mask: '000.000.000-00'});
   }
@@ -12,7 +65,7 @@ formatarCPF();
 
 // Telefone (aceita 8 ou 9 dígitos)
 function formatarTelefone () {
-  const telefone = document.getElementById('telefone')
+  const telefone = document.getElementById('telefone');
   if (telefone) {
     IMask(telefone, {mask: ['(00) 0000-0000', '(00) 00000-0000']});
   }
@@ -22,7 +75,7 @@ formatarTelefone();
 
 // CEP
 function formatarCEP () {
-  const cep = document.getElementById('cep')
+  const cep = document.getElementById('cep');
   if (cep) {
     IMask(cep, {mask: '00000-000'});
   }
@@ -54,7 +107,6 @@ function isCpfValido(cpf) {
 
 function validarCPF () {
   const cpf = cpfInput.value.replace(/\D/g, ""); // só números
-  console.log(cpf)
   if (!isCpfValido(cpf)) {
     cpfInput.setCustomValidity("CPF inválido.");
   } else {
@@ -64,7 +116,6 @@ function validarCPF () {
 
 document.addEventListener("DOMContentLoaded", validarCPF);
 if (cpfInput) {
-  console.log("cpf detectado")
   cpfInput.addEventListener("input", validarCPF);
 }
 
@@ -136,4 +187,3 @@ if (senhaInput) {
 if (confirmarSenhaInput) {
   confirmarSenhaInput.addEventListener("input", validarSenha);
 }
-
