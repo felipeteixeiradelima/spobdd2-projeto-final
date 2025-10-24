@@ -1,54 +1,183 @@
 // ======== VARIÁVEIS GLOBAIS =========
-var numCadastros = localStorage.length;
 var usuarioLogado = localStorage.getItem("usuarioLogado");
-console.log(numCadastros)
-console.log(usuarioLogado)
+const origin = obterURLMenosUltimoElemento()
+const homepage = origin + "/#"
+
+// ======== HELPERS =========
+function obterURLMenosUltimoElemento() {
+  const pathname = window.location.pathname;
+  const lastSlashIndex = pathname.lastIndexOf('/');
+
+  if (lastSlashIndex === -1) {
+    return window.location.origin;
+  }
+
+  const pathWithoutLastSegment = pathname.substring(0, lastSlashIndex);
+  return window.location.origin + pathWithoutLastSegment;
+}
 
 // ======== SISTEMA DE LOGIN USANDO LOCAL STORAGE =========
 window.addEventListener("storage", (event) => {
   if (event.key === "usuarioLogado") {
-    atualizarUsuarioLogado()
+    atualizarUsuarioLogado();
   }
 })
+
+function ativarValidadorLogin () {
+  const cpfInput = document.getElementById("cpf");
+  const senhaInput = document.getElementById("senha");
+  const displayLoginInvalido = document.getElementById("login-invalido");
+
+  if (!cpfInput | !senhaInput | !displayLoginInvalido) return;
+
+  function tornarDisplayInvisivel () {
+    displayLoginInvalido.style.display = "none";
+  }
+
+  cpfInput.addEventListener("input", tornarDisplayInvisivel);
+  senhaInput.addEventListener("input", tornarDisplayInvisivel);
+}
+
+ativarValidadorLogin();
+
+function adicionarEventListenerFormLogin () {
+
+  const form = document.getElementById("form-login");
+  
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    fazerLogin();
+  })
+}
+
+adicionarEventListenerFormLogin();
 
 function fazerLogin () {
   const cpfInput = document.getElementById("cpf");
   const senhaInput = document.getElementById("senha");
+  const displayLoginInvalido = document.getElementById("login-invalido");
+  
+  const cadastros = obterCadastros();
+  let isUsuarioCadastrado = false;
   let isCredenciaisValidas = false;
 
-  for (let i = 0; i < numCadastros & !isCredenciaisValidas; i++) {
-    let cadastro = localStorage.getItem(`cadastro${i}`);
-    
-    if (cpfInput.value === cadastro.cpf & senhaInput.value === cadastro.senha) {
+  cadastros.forEach(function (cadastro) {
+
+    if (cpfInput.value === cadastro.cpf) {
+      isUsuarioCadastrado = true;
+    }
+
+    if (senhaInput.value === cadastro.senha) {
       isCredenciaisValidas = true;
     }
+  });
+
+
+  if (!isUsuarioCadastrado) {
+    const text = "CPF não cadastrado.";
+    displayLoginInvalido.textContent = text;
+    displayLoginInvalido.style.display = "block";
+    console.error(text);
+    return;
   }
 
   if (!isCredenciaisValidas) {
-    senhaInput.setCustomValidity("Senha incorreta.");
+    const text = "Senha incorreta.";
+    displayLoginInvalido.textContent = text;
+    displayLoginInvalido.style.display = "block";
+    console.error(text);
     return;
   }
 
   localStorage.setItem("cpfLogado", cpfInput.value);
+
+  window.location.href = homepage;
 }
 
 function atualizarUsuarioLogado () {
   usuarioLogado = localStorage("cpfLogado");
-  console.log(usuarioLogado);
 }
 
 // ======== SISTEMA DE CADASTRO USANDO LOCAL STORAGE =========
 
+function obterCadastros () {
+  let cadastros = []
+  const lenLocalStorage = localStorage.length;
+  let cadastro;
+  let cadastroJSON;
+
+  for (let i = 0; i < lenLocalStorage; i++) {
+    try {
+      cadastro = localStorage.getItem(`cadastro${i}`);
+      cadastroJSON = JSON.parse(cadastro);
+    } catch (error) {
+      console.error(error)
+      continue;
+    }
+
+    if (cadastroJSON) {
+      cadastros.push(cadastroJSON);
+    }
+  }
+
+  return cadastros;
+}
+
+function obterIDUltimoCadastro () {
+  let id = 0;
+  const lenLocalStorage = localStorage.length;
+
+  for (let i = 0; i < lenLocalStorage; i++) {
+    const cadastro = localStorage.getItem(`cadastro${i}`);
+    if (cadastro) {
+      id = i;
+    }
+  }
+
+  return id;
+}
+
+function adicionarEventListenerFormCadastro () {
+
+  const form = document.getElementById("form-cadastro");
+  
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    cadastrar();
+
+    window.location.href = homepage;
+  })
+}
+
+adicionarEventListenerFormCadastro();
+
 function cadastrar () {
-  const url = window.location.split("/").slice(1);
   const cpfInput = document.getElementById("cpf");
   const senhaInput = document.getElementById("senha");
 
-  localStorage.setItem(`cadastro${numCadastros}`, {"cpf": cpfInput.value, "senha": senhaInput.value});
-  numCadastros++;
-  window.location.href = "index.html"
-  
-  console.log(localStorage.getItem(`cadastro${numCadastros}`))
+  const cadastro = {"cpf": cpfInput.value, "senha": senhaInput.value};
+  const cadastros = obterCadastros();
+  const idUltimoCadastrado = obterIDUltimoCadastro();
+  let isCPFJaCadastrado = false;
+
+  // Validando se CPF já não está cadastrado
+  cadastros.forEach(function (c) {
+    if (cadastro.cpf === c.cpf) isCPFJaCadastrado = true;
+  });
+
+  if (isCPFJaCadastrado) {
+    window.alert("Já existe um cadastro para este CPF.");
+    return
+  }
+
+  localStorage.setItem(`cadastro${idUltimoCadastrado}`, JSON.stringify(cadastro));
+
 }
 
 // ======== FORMATAÇÃO DE CAMPOS =========
@@ -162,6 +291,10 @@ const senhasDiferentes = document.getElementById("senhasDiferentes");
 const senhaInvalida = document.getElementById("senhaInvalida");
 
 function validarSenha() {
+  if (!senhaInput | !confirmarSenhaInput) {
+    return;
+  }
+
   const regexSenha = /^[A-Za-z0-9@_\*\-\.\#!\$%&\+=\?\^~]{8,20}$/;
   const senhaValida = regexSenha.test(senhaInput.value);
   const senhasIguais = senhaInput.value === confirmarSenhaInput.value;
