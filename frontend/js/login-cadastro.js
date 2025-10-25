@@ -98,8 +98,9 @@ function fazerLogin () {
 }
 
 function atualizarUsuarioLogado () {
-  usuarioLogado = localStorage("cpfLogado");
+  usuarioLogado = localStorage.getItem("cpfLogado");
 }
+
 
 // ======== SISTEMA DE CADASTRO USANDO LOCAL STORAGE =========
 
@@ -320,3 +321,37 @@ if (senhaInput) {
 if (confirmarSenhaInput) {
   confirmarSenhaInput.addEventListener("input", validarSenha);
 }
+
+// ======== CONTROLE DE LOGIN NO SITE (MENU E RESTRIÇÕES) =========
+document.addEventListener("DOMContentLoaded", () => {
+  const loginBtn = document.getElementById("loginBtn");
+  const cadastroBtn = document.getElementById("cadastroBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  const usuarioLogado = localStorage.getItem("cpfLogado");
+
+  if (usuarioLogado) {
+    // Usuário logado: esconde login/cadastro, mostra logout
+    if (loginBtn) loginBtn.style.display = "none";
+    if (cadastroBtn) cadastroBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.classList.remove("d-none");
+  } else {
+    // Usuário não logado: mostra login/cadastro, esconde logout
+    if (loginBtn) loginBtn.style.display = "inline-block";
+    if (cadastroBtn) cadastroBtn.style.display = "inline-block";
+    if (logoutBtn) logoutBtn.classList.add("d-none");
+  }
+
+  // Logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("cpfLogado");
+      // Atualiza visual do menu
+      if (loginBtn) loginBtn.style.display = "inline-block";
+      if (cadastroBtn) cadastroBtn.style.display = "inline-block";
+      if (logoutBtn) logoutBtn.classList.add("d-none");
+      alert("Você saiu da sua conta.");
+      window.location.href = "index.html";
+    });
+  }
+});
