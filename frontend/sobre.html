@@ -11,9 +11,9 @@
 </head>
 
 <body>
-  
-  <header class="bg-bege shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-light">
+  <!-- HEADER -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light m-auto fixed-top bg-bege shadow-sm">
       <div class="container">
         <a href="index.html" class="navbar-brand fw-bold text-danger">
           <i class="bi bi-droplet-half"></i> Doe Vida
@@ -29,7 +29,9 @@
             <li class="nav-item"><a class="nav-link" href="agendamento.html">Agendamento</a></li>
             <li class="nav-item"><a class="nav-link active" href="#">Sobre Nós</a></li>
           </ul>
-          <aside class="ms-3">
+          <aside class="my-2">
+            <a href="login.html" id="loginBtn" class="btn btn-outline-danger">Login</a>
+            <a href="cadastro.html" id="cadastroBtn" class="btn btn-danger mx-1">Cadastro</a>
             <button id="logoutBtn" class="btn btn-outline-danger d-none">Sair</button>
           </aside>
         </div>
@@ -38,8 +40,8 @@
   </header>
 
   <!-- MAIN -->
-  <main class="py-5 bg-light">
-    <section class="container">
+  <main class="py-5">
+    <section class="container m-auto bg-light">
       <header class="text-center mb-5">
         <h1 class="text-danger fw-bold">Sobre Nós</h1>
         <p class="lead">Conheça a missão, os valores e a história por trás do projeto <strong>Doe Vida</strong>.</p>
@@ -88,11 +90,10 @@
     </section>
   </main>
 
-  <footer class="bg-dark text-light text-center py-4 mt-5">
+  <footer class="bg-dark text-light text-center py-4">
     <p>&copy; 2025 Doe Vida - Todos os direitos reservados.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/login-cadastro.js"></script>
 </body>
 </html>

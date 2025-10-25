@@ -12,8 +12,8 @@
 
 <body>
   <!-- HEADER -->
-  <header class="bg-bege shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-light">
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light m-auto fixed-top bg-bege shadow-sm">
       <div class="container">
         <a href="index.html" class="navbar-brand fw-bold text-danger">
           <i class="bi bi-droplet-half"></i> Doe Vida
@@ -28,16 +28,19 @@
             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
             <li class="nav-item"><a class="nav-link active" href="#">Campanhas</a></li>
             <li class="nav-item"><a class="nav-link" href="agendamento.html">Agendamento</a></li>
-            <li class="nav-item"><a class="nav-link" href="sobre.html">Sobre Nós</a></li>
+            <li class="nav-item me-2"><a class="nav-link" href="sobre.html">Sobre Nós</a></li>
           </ul>
+          <aside class="my-2">
+            <button id="logoutBtn" class="btn btn-outline-danger d-none">Sair</button>
+          </aside>
         </div>
       </div>
     </nav>
   </header>
 
   <!-- MAIN -->
-  <main class="py-5 bg-light">
-    <section class="container">
+  <main class="py-5">
+    <section class="container m-auto bg-light">
       <header class="text-center mb-5">
         <h1 class="text-danger fw-bold">Campanhas de Doação</h1>
         <p class="lead">Veja nossas campanhas ativas e passadas — participe, compartilhe e salve vidas!</p>
@@ -100,29 +103,12 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="bg-dark text-light text-center py-4 mt-5">
+  <footer class="bg-dark text-light text-center py-4">
     <p>&copy; 2025 Doe Vida - Todos os direitos reservados.</p>
   </footer>
 
   <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/login-cadastro.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const cpf = localStorage.getItem("cpfLogado");
-      const logoutBtn = document.getElementById("logoutBtn");
-
-      if (!cpf) {
-        alert("Você precisa estar logado para acessar esta página.");
-        window.location.href = "login.html";
-      } else {
-        logoutBtn.classList.remove("d-none");
-        logoutBtn.addEventListener("click", () => {
-          localStorage.removeItem("cpfLogado");
-          window.location.href = "index.html";
-        });
-      }
-    });
-  </script>
+  <script src="js/campanhas.js"></script>
 </body>
 </html>
