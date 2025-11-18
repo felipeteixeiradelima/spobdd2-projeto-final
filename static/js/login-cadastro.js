@@ -17,169 +17,169 @@ function obterURLMenosUltimoElemento() {
 }
 
 // ======== SISTEMA DE LOGIN USANDO LOCAL STORAGE =========
-window.addEventListener("storage", (event) => {
-  if (event.key === "usuarioLogado") {
-    atualizarUsuarioLogado();
-  }
-})
+// window.addEventListener("storage", (event) => {
+//   if (event.key === "usuarioLogado") {
+//     atualizarUsuarioLogado();
+//   }
+// })
 
-function ativarValidadorLogin () {
-  const cpfInput = document.getElementById("cpf");
-  const senhaInput = document.getElementById("senha");
-  const displayLoginInvalido = document.getElementById("login-invalido");
+// function ativarValidadorLogin () {
+//   const cpfInput = document.getElementById("cpf");
+//   const senhaInput = document.getElementById("senha");
+//   const displayLoginInvalido = document.getElementById("login-invalido");
 
-  if (!cpfInput | !senhaInput | !displayLoginInvalido) return;
+//   if (!cpfInput | !senhaInput | !displayLoginInvalido) return;
 
-  function tornarDisplayInvisivel () {
-    displayLoginInvalido.style.display = "none";
-  }
+//   function tornarDisplayInvisivel () {
+//     displayLoginInvalido.style.display = "none";
+//   }
 
-  cpfInput.addEventListener("input", tornarDisplayInvisivel);
-  senhaInput.addEventListener("input", tornarDisplayInvisivel);
-}
+//   cpfInput.addEventListener("input", tornarDisplayInvisivel);
+//   senhaInput.addEventListener("input", tornarDisplayInvisivel);
+// }
 
-ativarValidadorLogin();
+// ativarValidadorLogin();
 
-function adicionarEventListenerFormLogin () {
+// function adicionarEventListenerFormLogin () {
 
-  const form = document.getElementById("form-login");
+//   const form = document.getElementById("form-login");
   
-  if (!form) return;
+//   if (!form) return;
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
+//   form.addEventListener("submit", function (event) {
+//     event.preventDefault();
 
-    fazerLogin();
-  })
-}
+//     fazerLogin();
+//   })
+// }
 
-adicionarEventListenerFormLogin();
+// adicionarEventListenerFormLogin();
 
-function fazerLogin () {
-  const cpfInput = document.getElementById("cpf");
-  const senhaInput = document.getElementById("senha");
-  const displayLoginInvalido = document.getElementById("login-invalido");
+// function fazerLogin () {
+//   const cpfInput = document.getElementById("cpf");
+//   const senhaInput = document.getElementById("senha");
+//   const displayLoginInvalido = document.getElementById("login-invalido");
   
-  const cadastros = obterCadastros();
-  let isUsuarioCadastrado = false;
-  let isCredenciaisValidas = false;
+//   const cadastros = obterCadastros();
+//   let isUsuarioCadastrado = false;
+//   let isCredenciaisValidas = false;
 
-  cadastros.forEach(function (cadastro) {
+//   cadastros.forEach(function (cadastro) {
 
-    if (cpfInput.value === cadastro.cpf) {
-      isUsuarioCadastrado = true;
-    }
+//     if (cpfInput.value === cadastro.cpf) {
+//       isUsuarioCadastrado = true;
+//     }
 
-    if (senhaInput.value === cadastro.senha) {
-      isCredenciaisValidas = true;
-    }
-  });
-
-
-  if (!isUsuarioCadastrado) {
-    const text = "CPF não cadastrado.";
-    displayLoginInvalido.textContent = text;
-    displayLoginInvalido.style.display = "block";
-    console.error(text);
-    return;
-  }
-
-  if (!isCredenciaisValidas) {
-    const text = "Senha incorreta.";
-    displayLoginInvalido.textContent = text;
-    displayLoginInvalido.style.display = "block";
-    console.error(text);
-    return;
-  }
-
-  localStorage.setItem("cpfLogado", cpfInput.value);
-
-  window.location.href = homepage;
-}
-
-function atualizarUsuarioLogado () {
-  usuarioLogado = localStorage.getItem("cpfLogado");
-}
+//     if (senhaInput.value === cadastro.senha) {
+//       isCredenciaisValidas = true;
+//     }
+//   });
 
 
-// ======== SISTEMA DE CADASTRO USANDO LOCAL STORAGE =========
+//   if (!isUsuarioCadastrado) {
+//     const text = "CPF não cadastrado.";
+//     displayLoginInvalido.textContent = text;
+//     displayLoginInvalido.style.display = "block";
+//     console.error(text);
+//     return;
+//   }
 
-function obterCadastros () {
-  let cadastros = []
-  const lenLocalStorage = localStorage.length;
-  let cadastro;
-  let cadastroJSON;
+//   if (!isCredenciaisValidas) {
+//     const text = "Senha incorreta.";
+//     displayLoginInvalido.textContent = text;
+//     displayLoginInvalido.style.display = "block";
+//     console.error(text);
+//     return;
+//   }
 
-  for (let i = 0; i < lenLocalStorage; i++) {
-    try {
-      cadastro = localStorage.getItem(`cadastro${i}`);
-      cadastroJSON = JSON.parse(cadastro);
-    } catch (error) {
-      console.error(error)
-      continue;
-    }
+//   localStorage.setItem("cpfLogado", cpfInput.value);
 
-    if (cadastroJSON) {
-      cadastros.push(cadastroJSON);
-    }
-  }
+//   window.location.href = homepage;
+// }
 
-  return cadastros;
-}
+// function atualizarUsuarioLogado () {
+//   usuarioLogado = localStorage.getItem("cpfLogado");
+// }
 
-function obterIDUltimoCadastro () {
-  let id = 0;
-  const lenLocalStorage = localStorage.length;
 
-  for (let i = 0; i < lenLocalStorage; i++) {
-    const cadastro = localStorage.getItem(`cadastro${i}`);
-    if (cadastro) {
-      id = i;
-    }
-  }
+// // ======== SISTEMA DE CADASTRO USANDO LOCAL STORAGE =========
 
-  return id;
-}
+// function obterCadastros () {
+//   let cadastros = []
+//   const lenLocalStorage = localStorage.length;
+//   let cadastro;
+//   let cadastroJSON;
 
-function adicionarEventListenerFormCadastro () {
+//   for (let i = 0; i < lenLocalStorage; i++) {
+//     try {
+//       cadastro = localStorage.getItem(`cadastro${i}`);
+//       cadastroJSON = JSON.parse(cadastro);
+//     } catch (error) {
+//       console.error(error)
+//       continue;
+//     }
 
-  const form = document.getElementById("form-cadastro");
+//     if (cadastroJSON) {
+//       cadastros.push(cadastroJSON);
+//     }
+//   }
+
+//   return cadastros;
+// }
+
+// function obterIDUltimoCadastro () {
+//   let id = 0;
+//   const lenLocalStorage = localStorage.length;
+
+//   for (let i = 0; i < lenLocalStorage; i++) {
+//     const cadastro = localStorage.getItem(`cadastro${i}`);
+//     if (cadastro) {
+//       id = i;
+//     }
+//   }
+
+//   return id;
+// }
+
+// function adicionarEventListenerFormCadastro () {
+
+//   const form = document.getElementById("form-cadastro");
   
-  if (!form) return;
+//   if (!form) return;
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
+//   form.addEventListener("submit", function (event) {
+//     event.preventDefault();
 
-    cadastrar();
+//     cadastrar();
 
-    window.location.href = homepage;
-  })
-}
+//     window.location.href = homepage;
+//   })
+// }
 
-adicionarEventListenerFormCadastro();
+// adicionarEventListenerFormCadastro();
 
-function cadastrar () {
-  const cpfInput = document.getElementById("cpf");
-  const senhaInput = document.getElementById("senha");
+// function cadastrar () {
+//   const cpfInput = document.getElementById("cpf");
+//   const senhaInput = document.getElementById("senha");
 
-  const cadastro = {"cpf": cpfInput.value, "senha": senhaInput.value};
-  const cadastros = obterCadastros();
-  const idUltimoCadastrado = obterIDUltimoCadastro();
-  let isCPFJaCadastrado = false;
+//   const cadastro = {"cpf": cpfInput.value, "senha": senhaInput.value};
+//   const cadastros = obterCadastros();
+//   const idUltimoCadastrado = obterIDUltimoCadastro();
+//   let isCPFJaCadastrado = false;
 
-  // Validando se CPF já não está cadastrado
-  cadastros.forEach(function (c) {
-    if (cadastro.cpf === c.cpf) isCPFJaCadastrado = true;
-  });
+//   // Validando se CPF já não está cadastrado
+//   cadastros.forEach(function (c) {
+//     if (cadastro.cpf === c.cpf) isCPFJaCadastrado = true;
+//   });
 
-  if (isCPFJaCadastrado) {
-    window.alert("Já existe um cadastro para este CPF.");
-    return
-  }
+//   if (isCPFJaCadastrado) {
+//     window.alert("Já existe um cadastro para este CPF.");
+//     return
+//   }
 
-  localStorage.setItem(`cadastro${idUltimoCadastrado}`, JSON.stringify(cadastro));
+//   localStorage.setItem(`cadastro${idUltimoCadastrado}`, JSON.stringify(cadastro));
 
-}
+// }
 
 // ======== FORMATAÇÃO DE CAMPOS =========
 
@@ -236,8 +236,7 @@ function isCpfValido(cpf) {
 }
 
 function validarCPF () {
-  const cpf = cpfInput.value.replace(/\D/g, ""); // só números
-  if (!isCpfValido(cpf)) {
+  if (!cpfInput || !isCpfValido(cpfInput.value.replace(/\D/g, ""))) {
     cpfInput.setCustomValidity("CPF inválido.");
   } else {
     cpfInput.setCustomValidity("");
@@ -323,35 +322,35 @@ if (confirmarSenhaInput) {
 }
 
 // ======== CONTROLE DE LOGIN NO SITE (MENU E RESTRIÇÕES) =========
-document.addEventListener("DOMContentLoaded", () => {
-  const loginBtn = document.getElementById("loginBtn");
-  const cadastroBtn = document.getElementById("cadastroBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
+// document.addEventListener("DOMContentLoaded", () => {
+//   const loginBtn = document.getElementById("loginBtn");
+//   const cadastroBtn = document.getElementById("cadastroBtn");
+//   const logoutBtn = document.getElementById("logoutBtn");
 
-  const usuarioLogado = localStorage.getItem("cpfLogado");
+//   const usuarioLogado = localStorage.getItem("cpfLogado");
 
-  if (usuarioLogado) {
-    // Usuário logado: esconde login/cadastro, mostra logout
-    if (loginBtn) loginBtn.style.display = "none";
-    if (cadastroBtn) cadastroBtn.style.display = "none";
-    if (logoutBtn) logoutBtn.classList.remove("d-none");
-  } else {
-    // Usuário não logado: mostra login/cadastro, esconde logout
-    if (loginBtn) loginBtn.style.display = "inline-block";
-    if (cadastroBtn) cadastroBtn.style.display = "inline-block";
-    if (logoutBtn) logoutBtn.classList.add("d-none");
-  }
+//   if (usuarioLogado) {
+//     // Usuário logado: esconde login/cadastro, mostra logout
+//     if (loginBtn) loginBtn.style.display = "none";
+//     if (cadastroBtn) cadastroBtn.style.display = "none";
+//     if (logoutBtn) logoutBtn.classList.remove("d-none");
+//   } else {
+//     // Usuário não logado: mostra login/cadastro, esconde logout
+//     if (loginBtn) loginBtn.style.display = "inline-block";
+//     if (cadastroBtn) cadastroBtn.style.display = "inline-block";
+//     if (logoutBtn) logoutBtn.classList.add("d-none");
+//   }
 
-  // Logout
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("cpfLogado");
-      // Atualiza visual do menu
-      if (loginBtn) loginBtn.style.display = "inline-block";
-      if (cadastroBtn) cadastroBtn.style.display = "inline-block";
-      if (logoutBtn) logoutBtn.classList.add("d-none");
-      alert("Você saiu da sua conta.");
-      window.location.href = "index.html";
-    });
-  }
-});
+//   // Logout
+//   if (logoutBtn) {
+//     logoutBtn.addEventListener("click", () => {
+//       localStorage.removeItem("cpfLogado");
+//       // Atualiza visual do menu
+//       if (loginBtn) loginBtn.style.display = "inline-block";
+//       if (cadastroBtn) cadastroBtn.style.display = "inline-block";
+//       if (logoutBtn) logoutBtn.classList.add("d-none");
+//       alert("Você saiu da sua conta.");
+//       window.location.href = "index.html";
+//     });
+//   }
+// });

@@ -17,7 +17,7 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-light m-auto fixed-top bg-bege shadow-sm">
       <div class="container">
-        <a href="index.html" class="navbar-brand fw-bold text-danger">
+        <a href="{% url "homepage" %}" class="navbar-brand fw-bold text-danger">
           <i class="bi bi-droplet-half"></i> Doe Vida
         </a>
 
@@ -27,14 +27,14 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="campanhas.html">Campanhas</a></li>
-            <li class="nav-item"><a class="nav-link" href="agendamento.html">Agendamento</a></li>
-            <li class="nav-item me-2"><a class="nav-link" href="sobre.html">Sobre Nós</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url "homepage" %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "campanhas_list" %}">Campanhas</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "agendamento" %}">Agendamento</a></li>
+            <li class="nav-item me-2"><a class="nav-link" href="{% url "sobre" %}">Sobre Nós</a></li>
           </ul>
           <aside class="my-2">
-            <a href="login.html" id="loginBtn" class="btn btn-outline-danger">Login</a>
-            <a href="cadastro.html" id="cadastroBtn" class="btn btn-danger mx-1">Cadastro</a>
+            <a href="{% url "login" %}" id="loginBtn" class="btn btn-outline-danger">Login</a>
+            <a href="{% url "cadastro_doador" %}" id="cadastroBtn" class="btn btn-danger mx-1">Cadastro</a>
             <button id="logoutBtn" class="btn btn-outline-danger d-none">Sair</button>
           </aside>
         </div>
@@ -55,7 +55,7 @@
           <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
             <h2 class="fw-bold text-bege">Doe Sangue, Doe Vida</h2>
             <p>Seu gesto pode salvar até quatro vidas.</p>
-            <a href="agendamento.html" class="btn btn-danger btn-lg">Agende sua Doação</a>
+            <a href="{% url "agendamento" %}" class="btn btn-danger btn-lg">Agende sua Doação</a>
           </div>
         </div>
 
@@ -65,7 +65,7 @@
           <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
             <h2 class="fw-bold text-bege">Campanhas Ativas</h2>
             <p>Participe das ações solidárias da nossa ONG.</p>
-            <a href="campanhas.html" class="btn btn-light btn-lg text-danger">Ver Campanhas</a>
+            <a href="{% url "campanhas_list" %}" class="btn btn-light btn-lg text-danger">Ver Campanhas</a>
           </div>
         </div>
 
@@ -128,7 +128,7 @@
       sempre cheios e salvar vidas. <br>
       Participe, compartilhe e ajude a inspirar mais doadores!
     </p>
-    <a href="campanhas.html" class="btn btn-danger mt-3">
+    <a href="{% url "campanhas_list" %}" class="btn btn-danger mt-3">
       <i class="bi bi-calendar-heart"></i> Quero Participar
     </a>
   </div>
@@ -140,7 +140,7 @@
       <div class="container">
         <h2 class="fw-bold text-danger">Agende sua Doação</h2>
         <p class="mb-4">Escolha o melhor dia e horário para doar sangue em um dos nossos pontos de coleta.</p>
-        <a href="agendamento.html" class="btn btn-lg btn-danger">
+        <a href="{% url "agendamento" %}" class="btn btn-lg btn-danger">
           <i class="bi bi-calendar-check"></i> Agendar Agora
         </a>
       </div>
@@ -151,9 +151,9 @@
   <footer class="bg-dark text-light text-center">
     <p>&copy; 2025 Doe Vida - Banco de Sangue. Todos os direitos reservados.</p>
     <nav>
-      <a href="#" class="text-light me-3"><i class="bi bi-facebook"></i></a>
-      <a href="#" class="text-light me-3"><i class="bi bi-instagram"></i></a>
-      <a href="#" class="text-light"><i class="bi bi-envelope"></i></a>
+      <a class="text-light me-3"><i class="bi bi-facebook"></i></a>
+      <a class="text-light me-3"><i class="bi bi-instagram"></i></a>
+      <a class="text-light"><i class="bi bi-envelope"></i></a>
     </nav>
   </footer>
 

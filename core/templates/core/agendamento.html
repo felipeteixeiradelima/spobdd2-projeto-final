@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,7 +9,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{% static "css/style.css" %}}">
 </head>
 
 <body>
@@ -15,20 +17,20 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-light m-auto fixed-top bg-bege shadow-sm">
       <div class="container">
-        <a href="index.html" class="navbar-brand fw-bold text-danger">
+        <a href="{% url "homepage" %}" class="navbar-brand fw-bold text-danger">
           <i class="bi bi-droplet-half"></i> Doe Vida
         </a>
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="menu">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="campanhas.html">Campanhas</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#">Agendamento</a></li>
-            <li class="nav-item me-2"><a class="nav-link" href="sobre.html">Sobre Nós</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "homepage" %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url "campanhas_list" %}">Campanhas</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url "agendamento" %}">Agendamento</a></li>
+            <li class="nav-item me-2"><a class="nav-link" href="{% url "sobre" %}">Sobre Nós</a></li>
           </ul>
           <aside class="my-2">
             <button id="logoutBtn" class="btn btn-outline-danger d-none">Sair</button>
@@ -49,6 +51,7 @@
       <!-- FORMULÁRIO -->
       <article class="bg-white p-4 rounded shadow-sm mx-auto" style="max-width: 600px;">
         <form id="formAgendamento" novalidate>
+          {% csrf_token %}
           <div class="mb-3">
             <label for="nome" class="form-label fw-semibold">Nome Completo</label>
             <input type="text" id="nome" class="form-control" placeholder="Seu nome" required>
@@ -74,6 +77,22 @@
             </select>
           </div>
 
+
+          <div class="mb-3">
+            <select name="campanha" id="campanha">
+              {% for camp in form.fields.campanha.queryset %}
+                  <option value="{{ camp.id }}">{{ camp.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <select name="ponto" id="ponto">
+              <option value="">Selecione um ponto</option>
+            </select>
+          </div>
+
+
           <button type="submit" class="btn btn-danger w-100">
             <i class="bi bi-check-circle"></i> Confirmar Agendamento
           </button>
@@ -93,6 +112,6 @@
 
   <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/agendamento.js"></script>
+  <script src="{% static "js/agendamento.js" %}%}"></script>
 </body>
 </html>

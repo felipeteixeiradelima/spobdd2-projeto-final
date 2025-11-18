@@ -1,12 +1,21 @@
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from accounts.forms import DoadorCreateForm
 from accounts.models import Doador, Endereco
 
+class CustomAuthForm(AuthenticationForm):
+    error_messages = {
+        'invalid_login': (
+            "Email e/ou senha inválidos!"
+        ),
+    }
+
 class CustomLoginView(LoginView):
-    template_name = "core/login.html"
+    authentication_form = CustomAuthForm
+    template_name = "accounts/login.html"
 
 def cadastro_doador(request):
     if request.method == "POST":

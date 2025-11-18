@@ -17,7 +17,7 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-light m-auto fixed-top bg-bege">
       <div class="container">
-        <a class="navbar-brand fw-bold text-danger" href="index.html">
+        <a class="navbar-brand fw-bold text-danger" href="{% url "homepage" %}">
           <i class="bi bi-droplet-half"></i> Doe Vida
         </a>
       </div>
@@ -26,14 +26,14 @@
 
   <!-- CONTEÚDO -->
   <main>
-    <section class="d-flex align-items-center justify-content-center login">
+    <section class="d-flex h-100 align-items-center justify-content-center login">
       <div class="card shadow-lg p-4 login">
         <h3 class="text-center text-danger fw-bold mb-4">Acesse sua Conta</h3>
         <form id="form-login" method="post" action="">
           {% csrf_token %}
           <div class="mb-3">
             <label for="username" class="form-label">E-mail</label>
-            <input type="email" id="email" name="username" class="form-control" placeholder="exemplo@email.com" required>
+            <input type="email" id="email" name="username" class="form-control" required>
           </div>
           <div class="mb-3">
             <label for="senha" class="form-label">Senha</label>
@@ -42,7 +42,7 @@
           <div id="login-invalido" class="text-danger my-2" style="display:none;"></div>
           <button type="submit" class="btn btn-danger w-100">Entrar</button>
           <p class="text-center mt-3 mb-0">
-            Não tem uma conta? <a href="cadastro.html" class="text-danger fw-bold">Cadastre-se</a>
+            Não tem uma conta? <a href="{% url "cadastro_doador" %}" class="text-danger fw-bold">Cadastre-se</a>
           </p>
         </form>
       </div>
