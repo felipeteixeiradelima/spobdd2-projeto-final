@@ -18,8 +18,8 @@
 {% for ag in agendamentos %}
 <tr>
     <td>{{ ag.data_agendada }}</td>
-    <td>{{ ag.id_campanha.nome }}</td>
-    <td>{{ ag.id_ponto.nome }}</td>
+    <td>{{ ag.campanha.nome }}</td>
+    <td>{{ ag.ponto.nome }}</td>
     <td>{{ ag.status }}</td>
     <td>
         {% if ag.status == "agendado" %}

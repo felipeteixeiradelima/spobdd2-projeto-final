@@ -21,48 +21,6 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Nome da Campanha</th>
-              <th scope="col">Local</th>
-              <th scope="col">Data</th>
-              <th scope="col">Status</th>
-              <th scope="col">Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Doe Sangue, Salve Vidas</td>
-              <td>Hospital São Lucas</td>
-              <td>15/11/2025</td>
-              <td><span class="badge bg-success">Ativa</span></td>
-              <td><button class="btn btn-outline-danger btn-sm"><i class="bi bi-calendar-heart"></i> Participar</button></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Gotas de Esperança</td>
-              <td>Hemocentro Central</td>
-              <td>22/10/2025</td>
-              <td><span class="badge bg-warning text-dark">Encerrando</span></td>
-              <td><button class="btn btn-outline-danger btn-sm"><i class="bi bi-calendar-heart"></i> Participar</button></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Doe Amor em Dobro</td>
-              <td>Praça da Cidadania</td>
-              <td>10/09/2025</td>
-              <td><span class="badge bg-secondary">Encerrada</span></td>
-              <td><button class="btn btn-outline-secondary btn-sm" disabled><i class="bi bi-lock"></i> Fechada</button></td>
-            </tr>
-          </tbody>
-        </table>
-
-
-        {% block content %}
-
-        <table>
-          <thead class="table-danger">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Nome da Campanha</th>
               <th scope="col">Data Início</th>
               <th scope="col">Data Fim</th>
               <th scope="col">Status</th>
@@ -70,20 +28,28 @@
           </thead>
 
         <tbody>
-          {% for c in campanhas %}
-          <tr>
-              <td scope="row">{{ c.id }}</td>
-              <td>{{ c.nome }}</td>
-              <td>{{ c.data_inicio|date:"d/m/Y" }}</td>
-              <td>{{ c.data_fim|date:"d/m/Y" }}</td>
-              <td>{{ c.status }}</td>
-              <td><a href="{% url 'campanha_detail' c.id %}">Detalhes</a></td>
-          </tr>
-          {% endfor %}
+          {% if campanhas %}
+
+            {% for c in campanhas %}
+            <tr>
+                <td scope="row">{{ c.id }}</td>
+                <td>{{ c.nome }}</td>
+                <td>{{ c.data_inicio|date:"d/m/Y" }}</td>
+                <td>{{ c.data_fim|date:"d/m/Y" }}</td>
+                <td><span class="badge bg-warning text-dark">{{ c.status }}</span></td>
+                <td><button class="btn btn-outline-danger btn-sm"><a href="{% url 'campanha_detail' c.id %}" class="bi bi-calendar-heart">Detalhes</a></td>
+            </tr>
+            {% endfor %}
+
+          {% else %}
+
+            <tr>
+              <td colspan="5" class="text-center text-muted py-3">Não há campanhas disponíveis no momento.</td>
+            </tr>
+
+          {% endif %}
         </tbody>
         </table>
-
-        {% endblock %}
       </div>
     </article>
 

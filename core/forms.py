@@ -13,7 +13,7 @@ class AgendamentoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Apenas campanhas ativas
-        self.fields["id_campanha"].queryset = Campanha.objects.filter(status="ativa") # type: ignore
+        self.fields["campanha"].queryset = Campanha.objects.filter(status="ativa") # type: ignore
 
     def clean_data_agendada(self):
         data = self.cleaned_data["data_agendada"]

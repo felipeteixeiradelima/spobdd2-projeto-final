@@ -2,49 +2,50 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Meu Site{% endblock %}</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Meu Site{% endblock %}</title>
 
-<body class="bg-bege">
-  <!-- Exibe mensagens -->
-  {% if messages %}
-  <div class="messages">
-    {% for message in messages %}
-      <div class="alert 
-        {% if message.tags %}
-            alert-{{ message.tags }}
-        {% endif %}
-      ">
-      {{ message }}
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
 
-  <!-- NAVBAR -->
-  {% include "partials/accounts/header.html" %}
+  <body class="bg-bege">
+    <!-- Exibe mensagens -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="alert 
+          {% if message.tags %}
+              alert-{{ message.tags }}
+          {% endif %}
+        ">
+        {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  <!-- CONTEÚDO -->
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+    <!-- NAVBAR -->
+    {% include "partials/accounts/header.html" %}
 
-  <!-- RODAPÉ -->
-  {% include "partials/accounts/footer.html" %}
+    <!-- CONTEÚDO -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
-  <!-- Biblioteca IMask -->
-  <script src="https://unpkg.com/imask"></script>
+    <!-- RODAPÉ -->
+    {% include "partials/accounts/footer.html" %}
 
-  <!-- Script JS personalizado -->
-  <script src="{% static 'js/login-cadastro.js' %}"></script>
+    <!-- Biblioteca IMask -->
+    <script src="https://unpkg.com/imask"></script>
 
-</body>
+    <!-- Script JS personalizado -->
+    <script src="{% static 'js/login-cadastro.js' %}"></script>
+
+  </body>
 
 </html>
