@@ -17,9 +17,15 @@
           <li class="nav-item me-2"><a class="nav-link" href="{% url "sobre" %}">Sobre Nós</a></li>
         </ul>
         <aside class="my-2">
-          <a href="{% url "login" %}" id="loginBtn" class="btn btn-outline-danger">Login</a>
-          <a href="{% url "cadastro_doador" %}" id="cadastroBtn" class="btn btn-danger mx-1">Cadastro</a>
-          <button id="logoutBtn" class="btn btn-outline-danger d-none">Sair</button>
+          {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button id="logoutBtn" class="btn btn-outline-danger">Sair</button>
+            </form>
+          {% else %}
+            <a href="{% url "login" %}" id="loginBtn" class="btn btn-outline-danger">Login</a>
+            <a href="{% url "cadastro_doador" %}" id="cadastroBtn" class="btn btn-danger mx-1">Cadastro</a>
+          {% endif %}
         </aside>
       </div>
     </div>

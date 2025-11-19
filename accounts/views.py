@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from accounts.forms import DoadorCreateForm
-from accounts.models import Doador, Endereco
+from accounts.models import Endereco
 
 class CustomAuthForm(AuthenticationForm):
     error_messages = {
@@ -19,8 +19,13 @@ class CustomLoginView(LoginView):
 
 def cadastro_doador(request):
     if request.method == "POST":
+        print("REQUISIÇÃO É POST")
         form = DoadorCreateForm(request.POST)
+        # print(form)
+        print(form.errors)
+        print(form.cleaned_data.get("cep"))
         if form.is_valid():
+            print("FORMULÁRIO É VÁLIDO")
 
             # Criar User
             email = form.cleaned_data["email"]
@@ -44,13 +49,14 @@ def cadastro_doador(request):
             # Criar Doador
             doador = form.save(commit=False)
             doador.user = user
-            doador.id_endereco = endereco
+            doador.endereco = endereco
             doador.save()
 
             messages.success(request, "Cadastro realizado com sucesso!")
             return redirect("login")
 
     else:
+        print("REQUISIÇÃO NÃO É POST")
         form = DoadorCreateForm()
 
     return render(request, "accounts/cadastro.html", {"form": form})

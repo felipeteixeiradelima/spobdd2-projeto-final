@@ -7,7 +7,7 @@
 <section class="d-flex align-items-center justify-content-center cadastro">
   <div class="card shadow-lg p-4 m-5 cadastro">
     <h3 class="text-center text-danger fw-bold mb-4">Cadastro de Doador</h3>
-    <form id="form-cadastro" method="post" action="">
+    <form id="form-cadastro" method="post">
         {% csrf_token %}
         <!-- DADOS PESSOAIS -->
         <hr class="mt-0 mb-4">
@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-3">
             <label for="tipo_sang" class="form-label">Tipo Sanguíneo</label>
-            <select name="tipo_sang" class="form-select">
+            <select name="tipo_sang" class="form-select" required>
             {% for tipo, label in form.fields.tipo_sang.choices %}
                 <option value="{{ tipo }}">{{ label }}</option>
             {% endfor %}
@@ -36,10 +36,9 @@
         <div class="col-md-6">
             <label for="sexo" class="form-label">Sexo</label>
             <select id="sexo" name="sexo" class="form-select" required>
-            <option value="">Selecione...</option>
-            <option value="M">Masculino</option>
-            <option value="F">Feminino</option>
-            <option value="O">Outro</option>
+            {% for sexo, label in form.fields.sexo.choices %}
+                <option value="{{ sexo }}">{{ label }}</option>
+            {% endfor %}
             </select>
         </div>
         <div class="col-md-6">
@@ -118,11 +117,13 @@
         <div class="col-md-2">
             <label for="estado" class="form-label">UF</label>
             <select id="estado" name="estado" class="form-select" required>
-            <option value="">--</option>
             {% for sigla, nome in form.fields.estado.choices %}
                 <option value="{{ sigla }}">{{ nome }}</option>
             {% endfor %}
             </select>
+        </div>
+        <div class="text-danger m3-2">
+            {{ form.errors }}
         </div>
         </div>
         <hr class="my-4">
