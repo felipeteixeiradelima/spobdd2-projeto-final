@@ -139,7 +139,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [BASE_DIR / 'static']   # se os arquivos estiverem na raiz static/
 TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']
 
 if not DEBUG:
