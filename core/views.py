@@ -67,8 +67,8 @@ def cancelar_agendamento(request, agendamento_id):
     return redirect("meus_agendamentos")
 
 @login_required
-def get_pontos_por_campanha(request, campanha_id):
-    pontos_ids = PontoCampanha.objects.filter(id_campanha_id=campanha_id)\
+def get_pontos_por_campanha(request, id_campanha):
+    pontos_ids = PontoCampanha.objects.filter(id_campanha=id_campanha)\
                                       .values_list("id_ponto_id", flat=True)
 
     pontos = PontoColeta.objects.filter(id__in=pontos_ids)
@@ -89,13 +89,9 @@ def campanhas_list(request):
     is_doador = Doador.objects.filter(user=usuario).exists()
     is_colaborador = Colaborador.objects.filter(user=usuario).exists()
 
-    # Doador vê apenas campanhas ATIVAS
-    if is_doador:
-        campanhas = Campanha.objects.filter(status="ativa").order_by("data_inicio")
-
-    # Colaborador vê todas
-    elif is_colaborador:
-        campanhas = Campanha.objects.all().order_by("data_inicio")
+    # Ver todas as campanhas
+    if is_doador or is_colaborador:
+        campanhas = Campanha.objects.all().order_by("-data_inicio")
 
     # fallback (não deveria acontecer)
     else:
@@ -114,6 +110,25 @@ def campanhas_list(request):
     })
 
 @login_required
-def campanha_detail(request, campanha_id):
-    campanha = get_object_or_404(Campanha, id=campanha_id)
-    return render(request, "core/campanha_detail.html", {"campanha": campanha})
+def campanha_detail(request, id_campanha):
+    campanha = get_object_or_404(Campanha, id_campanha=id_campanha)
+
+    pontos_campanha = PontoCampanha.objects.filter(campanha_id=id_campanha)
+
+    pontos_id = [pc.ponto.id_ponto for pc in pontos_campanha]
+
+    pontos = PontoColeta.objects.filter(id_ponto__in=pontos_id)
+
+    context = {
+        "campanha": campanha,
+        "pontos": pontos
+    }
+
+    return render(request, "core/campanha_detail.html", context)
+
+@login_required
+def ponto_detail(request, ponto_id):
+    ponto = get_object_or_404(PontoColeta, id_ponto=ponto_id)
+    return render(request, "core/ponto_detail.html", {
+        "ponto": ponto,
+    })

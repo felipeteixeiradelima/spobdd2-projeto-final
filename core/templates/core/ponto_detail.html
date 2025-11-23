@@ -1,0 +1,47 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ ponto.nome }} - Doe Vida{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <header class="text-center mb-4">
+        <h1 class="text-danger fw-bold">{{ ponto.nome }}</h1>
+        <p class="text-muted">Informações  este ponto de coleta</p>
+    </header>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <!-- Endereço -->
+            <h5 class="fw-bold text-danger">
+                <i class="bi bi-geo-alt"></i> Endereço
+            </h5>
+            {% if ponto.endereco %}
+                <p class="text-muted">
+                    {{ ponto.endereco.logradouro }}, {{ ponto.endereco.numero }} - {{ ponto.endereco.bairro }} <br>
+                    {{ ponto.endereco.cidade }} - {{ ponto.endereco.estado }} <br>
+                    CEP: {{ ponto.endereco.cep }}
+                </p>
+            {% else %}
+                <p class="text-muted">Este ponto ainda não possui endereço cadastrado.</p>
+            {% endif %}
+
+            <!-- Botões -->
+            <div class="mt-4 d-flex justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+
+                <a href="{% url 'agendamento' %}" class="btn btn-danger">
+                    <i class="bi bi-calendar2-heart"></i> Agendar doação
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
