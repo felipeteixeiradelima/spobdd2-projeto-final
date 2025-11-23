@@ -1,0 +1,43 @@
+// document.addEventListener("DOMContentLoaded", () => {
+//     const cpf = localStorage.getItem("cpfLogado");
+//     const logoutBtn = document.getElementById("logoutBtn");
+
+//     if (!cpf) {
+//     alert("Você precisa estar logado para acessar esta página.");
+//     window.location.href = "login.html";
+//     } else {
+//     logoutBtn.classList.remove("d-none");
+//     logoutBtn.addEventListener("click", () => {
+//         localStorage.removeItem("cpfLogado");
+//         window.location.href = "index.html";
+//     });
+//     }
+
+//     const form = document.getElementById("formAgendamento");
+//     const msg = document.getElementById("mensagemSucesso");
+
+//     form.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     form.reset();
+//     msg.classList.remove("d-none");
+//     setTimeout(() => msg.classList.add("d-none"), 4000);
+//     });
+// });
+
+document.getElementById("campanha").addEventListener("change", function() {
+    const campanhaId = this.value;
+
+    fetch(`/ajax/pontos/${campanhaId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById("ponto");
+            select.innerHTML = "";
+
+            data.pontos.forEach(p => {
+                const opt = document.createElement("option");
+                opt.value = p.id;
+                opt.textContent = p.nome;
+                select.appendChild(opt);
+            });
+        });
+});

@@ -1,0 +1,101 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ campanha.nome }} - Doe Vida{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- TÍTULO -->
+    <header class="text-center mb-4">
+        <h1 class="text-danger fw-bold">{{ campanha.nome }}</h1>
+        <p class="text-muted">Detalhes completos desta campanha de doação de sangue</p>
+    </header>
+
+    <!-- CARD PRINCIPAL -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <!-- STATUS -->
+            <div class="mb-3">
+                <span class="badge 
+                    {% if campanha.status == 'ativa' %}bg-success
+                    {% elif campanha.status == 'planejada' %}bg-info text-dark
+                    {% elif campanha.status == 'finalizada' %}bg-secondary
+                    {% else %}bg-danger{% endif %}
+                ">
+                    {{ campanha.status|upper }}
+                </span>
+            </div>
+
+            <!-- DESCRIÇÃO -->
+            <h5 class="fw-bold text-danger">
+                <i class="bi bi-info-circle"></i> Descrição
+            </h5>
+            {% if campanha.descricao %}
+                <p class="text-muted">{{ campanha.descricao|linebreaks }}</p>
+            {% else %}
+                <p class="text-muted">(Sem descrição)</p>
+            {% endif %}
+
+            <!-- PERÍODO -->
+            <h5 class="fw-bold text-danger mt-4">
+                <i class="bi bi-calendar-event"></i> Período
+            </h5>
+            <p class="text-muted">
+                {{ campanha.data_inicio|date:"d/m/Y" }} — {{ campanha.data_fim|date:"d/m/Y" }}
+            </p>
+
+            <!-- PÚBLICO-ALVO -->
+            <h5 class="fw-bold text-danger mt-4">
+                <i class="bi bi-people"></i> Público-alvo
+            </h5>
+            <p class="text-muted">{{ campanha.publico_alvo }}</p>
+
+            <!-- PONTOS DE COLETA RELACIONADOS -->
+            <h5 class="fw-bold text-danger mt-4">
+                <i class="bi bi-geo-alt"></i> Pontos de Coleta
+            </h5>
+
+            {% if pontos %}
+                <ul class="list-group mb-3">
+                    {% for p in pontos %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{% url 'ponto_detail' p.id_ponto %}" class="text-decoration-none fw-semibold text-danger">
+                                {{ p.nome }}
+                            </a>
+                            {% if p.endereco %}
+                                <span class="badge bg-danger rounded-pill">
+                                    {{ p.endereco.cidade }} - {{ p.endereco.estado }}
+                                </span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Nenhum ponto de coleta está vinculado a esta campanha.</p>
+            {% endif %}
+
+            <!-- BOTÕES -->
+            <div class="mt-4 d-flex justify-content-between">
+
+                <!-- VOLTAR -->
+                <a href="{% url 'campanhas_list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+
+                <!-- AGENDAR (se a campanha estiver ativa) -->
+                {% if campanha.status == "ativa" %}
+                    <a href="{% url 'agendamento' %}" class="btn btn-danger">
+                        <i class="bi bi-calendar2-heart"></i> Agendar doação
+                    </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

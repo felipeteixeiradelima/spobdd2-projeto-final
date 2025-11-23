@@ -1,0 +1,138 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Cadastro - Doe Vida{% endblock %}
+
+{% block content %}
+
+<section class="d-flex align-items-center justify-content-center cadastro">
+  <div class="card shadow-lg p-4 m-5 cadastro">
+    <h3 class="text-center text-danger fw-bold mb-4">Cadastro de Doador</h3>
+    <form id="form-cadastro" method="post">
+        {% csrf_token %}
+        <!-- DADOS PESSOAIS -->
+        <hr class="mt-0 mb-4">
+        <h5 class="text-danger fw-bold mb-3">Dados pessoais</h5>
+        <div class="row g-3">
+        <div class="col-md-9">
+            <label for="nome" class="form-label">Nome Completo</label>
+            <input type="text" id="nome" name="nome" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <label for="tipo_sang" class="form-label">Tipo Sanguíneo</label>
+            <select name="tipo_sang" class="form-select" required>
+            {% for tipo, label in form.fields.tipo_sang.choices %}
+                <option value="{{ tipo }}">{{ label }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="cpf" class="form-label">CPF</label>
+            <input type="text" id="cpf" name="cpf" class="form-control" maxlength="14" placeholder="000.000.000-00" required>
+        </div>
+        <div class="col-md-6">
+            <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+            <input type="date" id="dataNascimento" name="data_nasc" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select id="sexo" name="sexo" class="form-select" required>
+            {% for sexo, label in form.fields.sexo.choices %}
+                <option value="{{ sexo }}">{{ label }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="telefone" class="form-label">Telefone</label>
+            <input type="tel" id="telefone" name="telefone" class="form-control" placeholder="(00) 00000-0000" required>
+        </div>
+        <div class="col-md-12">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+            <label for="password" class="form-label">Senha</label>
+            <input
+            type="password"
+            id="senha"
+            name="password"
+            class="form-control"
+            required
+            minlength="8"
+            maxlength="20"
+            pattern="^[A-Za-z0-9@_\*\-\.\#!$%&\+=\?\^~]{8,20}$"
+            title="A senha deve ter entre 8 e 20 caracteres e pode conter letras (maiúsculas/minúsculas) e os símbolos @, _ e *">
+        </div>
+
+        <div class="col-md-6">
+            <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+            <input
+            type="password"
+            id="confirmarSenha"
+            name="confirmarSenha"
+            class="form-control"
+            required
+            minlength="8"
+            maxlength="20">
+        </div>
+        <div class="mt-3">
+            <div id="senhaInvalida" class="text-danger m3-2" style="display:none;">
+            A senha digitada é inválida.
+            </div>
+            <div id="senhasDiferentes" class="text-danger m3-2" style="display:none;">
+            As senhas não coincidem.
+            </div>
+            <small id="senhaHelp" class="text-muted">
+            A senha deve ter de 8 a 20 caracteres, podendo ser letras (maiúsculas/minúsculas) e caracteres especiais.
+            </small>
+        </div>
+        </div>
+        <hr class="my-4">
+        <!-- ENDEREÇO -->
+        <h5 class="text-danger fw-bold mb-3">Endereço</h5>
+        <div class="row g-3">
+        <div class="col-md-4">
+            <label for="cep" class="form-label">CEP</label>
+            <input type="text" id="cep" name="cep" class="form-control" placeholder="00000-000" required>
+        </div>
+        <div class="col-md-8">
+            <label for="logradouro" class="form-label">Logradouro</label>
+            <input type="text" id="logradouro" name="logradouro" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <label for="numero" class="form-label">Número</label>
+            <input type="text" id="numero" name="numero" class="form-control" required>
+        </div>
+        <div class="col-md-9">
+            <label for="complemento" class="form-label">Complemento (opcional)</label>
+            <input type="text" id="complemento" name="complemento" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="bairro" class="form-label">Bairro</label>
+            <input type="text" id="bairro" name="bairro" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+            <label for="cidade" class="form-label">Cidade</label>
+            <input type="text" id="cidade" name="cidade" class="form-control" required>
+        </div>
+        <div class="col-md-2">
+            <label for="estado" class="form-label">UF</label>
+            <select id="estado" name="estado" class="form-select" required>
+            {% for sigla, nome in form.fields.estado.choices %}
+                <option value="{{ sigla }}">{{ nome }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="text-danger m3-2">
+            {{ form.errors }}
+        </div>
+        </div>
+        <hr class="my-4">
+        <button type="submit" class="btn btn-danger w-100">Cadastrar</button>
+        <p class="text-center mt-3 mb-0">
+        Já tem conta? <a href="{% url "login" %}" class="text-danger fw-bold">Faça login</a>
+        </p>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

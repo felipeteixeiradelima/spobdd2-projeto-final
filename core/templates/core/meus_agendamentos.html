@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+
+{% block title %} Meus Agendamentos - Doe Vida{% endblock %}
+
+{% block content %}
+
+<h2>Meus Agendamentos</h2>
+
+<table>
+<tr>
+    <th>Data</th>
+    <th>Campanha</th>
+    <th>Ponto</th>
+    <th>Status</th>
+    <th>Ações</th>
+</tr>
+
+{% for ag in agendamentos %}
+<tr>
+    <td>{{ ag.data_agendada }}</td>
+    <td>{{ ag.campanha.nome }}</td>
+    <td>{{ ag.ponto.nome }}</td>
+    <td>{{ ag.status }}</td>
+    <td>
+        {% if ag.status == "agendado" %}
+            <a href="{% url 'cancelar_agendamento' ag.id %}">Cancelar</a>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -10,7 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from os import getenv
 from pathlib import Path
+from django.contrib.messages import constants as messages
+
+from dotenv import load_dotenv
+
+# Carrega variáveis do .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',
+    'core.apps.CoreConfig'
 ]
 
 MIDDLEWARE = [
@@ -72,8 +81,18 @@ WSGI_APPLICATION = 'projeto_final.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': getenv("DB_NAME"),
+        'USER': getenv("DB_USER"),
+        'PASSWORD': getenv("DB_PASSWORD"),
+        'HOST': getenv("DB_HOSTNAME"),
+        'PORT': getenv("DB_PORT"),
+    },
+    'backup': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
@@ -98,13 +117,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = "login"
+
+LOGIN_REDIRECT_URL = "homepage"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC-3'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -115,8 +137,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']   # se os arquivos estiverem na raiz static/
+TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Messages
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

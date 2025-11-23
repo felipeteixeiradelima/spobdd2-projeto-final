@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Meu Site{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+
+  <body class="bg-bege">
+    <!-- Exibe mensagens -->
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="alert 
+          {% if message.tags %}
+              alert-{{ message.tags }}
+          {% endif %}
+        ">
+        {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- NAVBAR -->
+    {% include "partials/accounts/header.html" %}
+
+    <!-- CONTEÚDO -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- RODAPÉ -->
+    {% include "partials/accounts/footer.html" %}
+
+    <!-- Biblioteca IMask -->
+    <script src="https://unpkg.com/imask"></script>
+
+    <!-- Script JS personalizado -->
+    <script src="{% static 'js/login-cadastro.js' %}"></script>
+
+  </body>
+
+</html>
