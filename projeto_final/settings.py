@@ -33,8 +33,8 @@ SECRET_KEY = getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
-    'spobdd2-projeto-final.onrender.com',
+    '127.0.0.1',
+    'spobdd2-projeto-final.onrender.com'
 ]
 
 
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -141,13 +142,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
 TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']
 
 if not DEBUG:
     STATIC_ROOT = BASE_DIR / 'staticfiles'
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+else:
+    STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

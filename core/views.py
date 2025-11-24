@@ -16,69 +16,56 @@ def about(request):
 
 @login_required
 def agendamento_view(request):
-    # Obtém o doador vinculado ao usuário logado
-    try:
-        doador = Doador.objects.get(user=request.user)
-    except Doador.DoesNotExist:
-        messages.error(request, "Apenas doadores podem realizar agendamentos.")
-        return redirect("homepage")
+    print("POST:", request.POST)
+
+    doador = request.user.doador_profile
 
     if request.method == "POST":
-        form = AgendamentoForm(request.POST)
+        form = AgendamentoForm(request.POST, doador=doador)
+
         if form.is_valid():
-            # Valida se doador já tem um agendamento para essa campanha
-            if Agendamento.objects.filter(id_doador=doador, id_campanha=form.cleaned_data["id_campanha"]).exists():
-                messages.error(request, "Você já possui um agendamento nesta campanha.")
-                return redirect("agendamento")
-
-            # Valida se doador doou nos últimos 90 dias
-            ultima_doacao = Doacao.objects.filter(id_doador=doador).order_by("-data_doacao").first()
-            if ultima_doacao:
-                proxima_data = ultima_doacao.data_doacao + timedelta(days=90)
-                if date.today() < proxima_data:
-                    messages.error(request, f"Você só poderá agendar doação após {proxima_data.strftime('%d/%m/%Y')}.")
-                    return redirect("agendamento")
-
             agendamento = form.save(commit=False)
-            agendamento.id_doador = doador
+            agendamento.doador = doador
             agendamento.save()
             messages.success(request, "Agendamento realizado com sucesso!")
-            return redirect("homepage")
+            return redirect("meus_agendamentos")
+        else:
+            messages.error(request, "Corrija os erros abaixo.")
     else:
-        form = AgendamentoForm()
+        form = AgendamentoForm(doador=doador)
 
     return render(request, "core/agendamento.html", {"form": form})
 
 @login_required
 def meus_agendamentos(request):
     doador = Doador.objects.get(user=request.user)
-    agendamentos = Agendamento.objects.filter(id_doador=doador).order_by("-data_agendada")
+    agendamentos = Agendamento.objects.filter(doador_id=doador).order_by("-data_agendada")
     return render(request, "core/meus_agendamentos.html", {"agendamentos": agendamentos})
 
 @login_required
 def cancelar_agendamento(request, agendamento_id):
     doador = Doador.objects.get(user=request.user)
-    agendamento = Agendamento.objects.get(id=agendamento_id, id_doador=doador)
+    agendamento = Agendamento.objects.get(id_agendamento=agendamento_id, doador_id=doador)
 
     agendamento.status = "cancelado"
     agendamento.save()
 
-    messages.success(request, "Agendamento cancelado.")
+    messages.success(request, "Agendamento cancelado com sucesso!")
     return redirect("meus_agendamentos")
 
 @login_required
 def get_pontos_por_campanha(request, id_campanha):
-    pontos_ids = PontoCampanha.objects.filter(id_campanha=id_campanha)\
-                                      .values_list("id_ponto_id", flat=True)
+    try:
+        pontos_ids = PontoCampanha.objects.filter(campanha_id=id_campanha)\
+                                        .values_list("ponto_id", flat=True)
 
-    pontos = PontoColeta.objects.filter(id__in=pontos_ids)
+        pontos = PontoColeta.objects.filter(id_ponto__in=pontos_ids)
 
-    dados = [
-        {"id": p.id, "nome": p.nome} # type: ignore
-        for p in pontos
-    ]
+        dados = [{"id_ponto": p.id_ponto, "nome": p.nome} for p in pontos]
 
-    return JsonResponse({"pontos": dados})
+        return JsonResponse({"pontos": dados})
+    except Exception as e:
+        return JsonResponse({"pontos": []})
 
 @login_required
 def campanhas_list(request):
@@ -132,3 +119,19 @@ def ponto_detail(request, ponto_id):
     return render(request, "core/ponto_detail.html", {
         "ponto": ponto,
     })
+
+@login_required
+def campanhas_json(request):
+    campanhas = Campanha.objects.all().order_by("-data_inicio")
+
+    data = []
+    for c in campanhas:
+        data.append({
+            "id": c.id_campanha,
+            "nome": c.nome,
+            "data_inicio": c.data_inicio.strftime("%d/%m/%Y"), # type: ignore
+            "data_fim": c.data_fim.strftime("%d/%m/%Y"), # type: ignore
+            "status": c.get_status_display(), # type: ignore
+        })
+
+    return JsonResponse({"campanhas": data})

@@ -1,5 +1,9 @@
 {% extends "core/base.html" %}
 
+{% load widget_tweaks %}
+
+{% load static %}
+
 {% block title %}Agendamento - Doe Vida{% endblock %}
 
 {% block content %}
@@ -8,53 +12,67 @@
   <section class="container m-auto bg-light p-5">
     <header class="text-center mb-5">
       <h1 class="text-danger fw-bold"><i class="bi bi-calendar-heart"></i> Agende sua Doação</h1>
-      <p class="lead">Preencha os campos abaixo e garanta seu horário para doar sangue e salvar vidas!</p>
+      <p class="lead">Preencha os campos abaixo e garanta seu agendamento para doar sangue e salvar vidas!</p>
     </header>
 
     <!-- FORMULÁRIO -->
     <article class="bg-white p-4 rounded shadow-sm mx-auto" style="max-width: 600px;">
-      <form id="formAgendamento" novalidate>
+      <form method="POST">
         {% csrf_token %}
-        <div class="mb-3">
-          <label for="nome" class="form-label fw-semibold">Nome Completo</label>
-          <input type="text" id="nome" class="form-control" placeholder="Seu nome" required>
+
+        <!-- CAMPANHA -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Campanha</label>
+          <div class="input-group">
+              <span class="input-group-text bg-danger text-white">
+                  <i class="bi bi-bullseye"></i>
+              </span>
+              {{ form.campanha|add_class:"form-select" }}
+              {% if form.campanha.errors %}
+                <div class="text-danger small">
+                  {{ form.campanha.errors }}
+              </div>
+              {% endif %}
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label for="data" class="form-label fw-semibold">Data</label>
-          <input type="date" id="data" class="form-control" required>
+        <!-- PONTO (AJAX) -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Ponto de Coleta</label>
+          <div class="input-group">
+              <span class="input-group-text bg-danger text-white">
+                  <i class="bi bi-geo-alt"></i>
+              </span>
+              {{ form.ponto|add_class:"form-select" }}
+          </div>
+          {% if form.ponto.errors %}
+            <div class="text-danger small">
+              {{ form.ponto.errors }}
+            </div>
+          {% endif %}
         </div>
 
-        <div class="mb-3">
-          <label for="horario" class="form-label fw-semibold">Horário</label>
-          <input type="time" id="horario" class="form-control" required>
+        <!-- DATA -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Data do Agendamento</label>
+          <div class="input-group">
+              <span class="input-group-text bg-danger text-white">
+                  <i class="bi bi-calendar-event"></i>
+              </span>
+              {{ form.data_agendada|add_class:"form-control" }}
+          </div>
+          {% if form.data_agendada.errors %}
+            <div class="text-danger small">
+                {{ form.data_agendada.errors }}
+            </div>
+          {% endif %}
         </div>
 
-        <div class="mb-3">
-          <label for="local" class="form-label fw-semibold">Local da Doação</label>
-          <select id="local" class="form-select" required>
-            <option value="">Selecione...</option>
-            <option>Hospital São Lucas</option>
-            <option>Hemocentro Central</option>
-            <option>Posto Sul</option>
-          </select>
-        </div>
-
-
-        <div class="mb-3">
-          <select name="campanha" id="campanha">
-            {% for camp in form.fields.campanha.queryset %}
-                <option value="{{ camp.id }}">{{ camp.nome }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <select name="ponto" id="ponto">
-            <option value="">Selecione um ponto</option>
-          </select>
-        </div>
-
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+              {{ form.non_field_errors }}
+          </div>
+        {% endif %}
 
         <button type="submit" class="btn btn-danger w-100">
           <i class="bi bi-check-circle"></i> Confirmar Agendamento

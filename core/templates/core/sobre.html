@@ -1,5 +1,7 @@
 {% extends "core/base.html" %}
 
+{% load static %}
+
 {% block title %}Sobre Nós - Doe Vida{% endblock %}
 
 {% block content %}
@@ -13,7 +15,7 @@
 
     <!-- TEXTO PRINCIPAL -->
     <article class="bg-white p-4 rounded shadow-sm mb-5">
-      <p>
+      <p class="paragrafo-sobre">
         O <strong>Doe Vida</strong> surgiu da necessidade de conectar pessoas 
         interessadas em salvar vidas com os profissionais e instituições salvam 
         vidas diáriamente.
@@ -32,8 +34,8 @@
         <h2 class="h4 text-danger mb-3"><i class="bi bi-camera-video"></i> Nosso Vídeo</h2>
         <div class="ratio ratio-16x9 border rounded bg-dark">
           <!-- vídeo -->
-          <video controls poster="imagens/preview-video.jpg">
-            <source src="videos/sobre-nos.mp4" type="video/mp4">
+          <video controls>
+            <source src="{% static 'resources/videos/sobre-nos.mp4' %}" type="video/mp4">
             Seu navegador não suporta vídeos HTML5.
           </video>
         </div>
@@ -44,7 +46,7 @@
         <div class="p-3 border rounded bg-white shadow-sm">
           <!-- áudio -->
           <audio controls>
-            <source src="audios/mensagem.mp3" type="audio/mp3">
+            <source src="{% static 'resources/audios/mensagem.mpeg' %}" type="audio/mpeg">
             Seu navegador não suporta o elemento de áudio.
           </audio>
           <p class="mt-3 text-muted">Uma mensagem especial sobre como cada doação transforma vidas.</p>

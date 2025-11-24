@@ -19,13 +19,9 @@ class CustomLoginView(LoginView):
 
 def cadastro_doador(request):
     if request.method == "POST":
-        print("REQUISIÇÃO É POST")
         form = DoadorCreateForm(request.POST)
-        # print(form)
-        print(form.errors)
-        print(form.cleaned_data.get("cep"))
+
         if form.is_valid():
-            print("FORMULÁRIO É VÁLIDO")
 
             # Criar User
             email = form.cleaned_data["email"]
@@ -56,7 +52,6 @@ def cadastro_doador(request):
             return redirect("login")
 
     else:
-        print("REQUISIÇÃO NÃO É POST")
         form = DoadorCreateForm()
 
     return render(request, "accounts/cadastro.html", {"form": form})
