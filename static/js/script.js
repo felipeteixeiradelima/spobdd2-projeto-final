@@ -219,6 +219,22 @@ if (currentURL.endsWith("/campanhas/")) {
                 }
 
                 campanhas.forEach(c => {
+                    let statusClass
+
+                    switch (c.status) {
+                        case "Ativada":
+                            statusClass = "badge bg-success"
+                            break;
+                        case "Planejada":
+                            statusClass = "badge bg-primary"
+                            break;
+                        case "Cancelada":
+                            statusClass = "badge bg-danger"
+                            break;
+                        default:
+                            statusClass = "badge bg-secondary"
+                            break;
+                    }
                     tbody.innerHTML += `
                         <tr>
                             <td>${c.id}</td>
@@ -226,7 +242,7 @@ if (currentURL.endsWith("/campanhas/")) {
                             <td>${c.data_inicio}</td>
                             <td>${c.data_fim}</td>
                             <td>
-                                <span class="badge bg-warning text-dark">${c.status}</span>
+                                <span class="${statusClass}">${c.status}</span>
                             </td>
                             <td>
                                 <a href="${c.detail_url}" class="btn btn-outline-danger btn-sm">
