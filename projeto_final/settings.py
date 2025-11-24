@@ -143,14 +143,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']
-
-if not DEBUG:
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-else:
-    STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
