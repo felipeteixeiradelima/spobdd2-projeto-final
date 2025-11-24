@@ -222,7 +222,7 @@ if (currentURL.endsWith("/campanhas/")) {
                     let statusClass
 
                     switch (c.status) {
-                        case "Ativada":
+                        case "Ativa":
                             statusClass = "badge bg-success"
                             break;
                         case "Planejada":
