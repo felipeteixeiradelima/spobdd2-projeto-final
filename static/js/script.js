@@ -198,58 +198,52 @@ if (currentURL.endsWith("/login/") | currentURL.endsWith("/cadastro/")) {
 if (currentURL.endsWith("/campanhas/")) {
 
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const campanhaSelect = document.getElementById("id_campanha");
-        const pontoSelect = document.getElementById("id_ponto");
+    document.addEventListener("DOMContentLoaded", function() {
+        const tbody = document.getElementById("campanhas-table-body");
 
-        function carregarPontos() {
-            const campanhaId = campanhaSelect.value;
+        fetch("{% url 'campanhas_json' %}")
+            .then(response => response.json())
+            .then(data => {
+                const campanhas = data.campanhas;
 
-            // limpa antes
-            pontoSelect.innerHTML = `
-                <option value="">Carregando pontos...</option>
-            `;
+                tbody.innerHTML = ""; // limpa "Carregando"
 
-            if (!campanhaId) {
-                pontoSelect.innerHTML = `
-                    <option value="">Selecione uma campanha primeiro</option>
-                `;
-                return;
-            }
+                if (campanhas.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                        <td colspan="6" class="text-center text-muted py-3">
+                            Não há campanhas disponíveis no momento.
+                        </td>
+                        </tr>`;
+                    return;
+                }
 
-            fetch(`/ajax/pontos-por-campanha/${campanhaId}/`)
-                .then(res => {
-                    if (!res.ok) throw new Error();
-                    return res.json();
-                })
-                .then(data => {
-                    pontoSelect.innerHTML = "";
-
-                    if (data.pontos.length === 0) {
-                        pontoSelect.innerHTML = `
-                            <option value="">Nenhum ponto disponível</option>
-                        `;
-                        return;
-                    }
-
-                    data.pontos.forEach(p => {
-                        pontoSelect.innerHTML += `
-                            <option value="${p.id_ponto}">${p.nome}</option>
-                        `;
-                    });
-                })
-                .catch(() => {
-                    pontoSelect.innerHTML = `
-                        <option value="">Erro ao carregar pontos</option>
+                campanhas.forEach(c => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${c.id}</td>
+                            <td>${c.nome}</td>
+                            <td>${c.data_inicio}</td>
+                            <td>${c.data_fim}</td>
+                            <td>
+                                <span class="badge bg-warning text-dark">${c.status}</span>
+                            </td>
+                            <td>
+                                <a href="${c.detail_url}" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-calendar-heart"></i> Detalhes
+                                </a>
+                            </td>
+                        </tr>
                     `;
                 });
-        }
-
-        campanhaSelect.addEventListener("change", carregarPontos);
-
-        // Se já estiver carregando a página com um POST inválido, tenta repopular
-        if (campanhaSelect.value) {
-            carregarPontos();
-        }
+            })
+            .catch(() => {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger py-3">
+                            Erro ao carregar campanhas. Tente novamente mais tarde.
+                        </td>
+                    </tr>`;
+            });
     });
 }
