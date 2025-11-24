@@ -130,3 +130,10 @@ div.login {
   max-width: 400px;
   width: 60vw;
 }
+
+.paragrafo-sobre::first-letter {
+  font-size: 2em !important;
+  font-weight: bold !important;
+  color: #b22222 !important;
+  font-family: 'Times New Roman', Times, serif;
+}

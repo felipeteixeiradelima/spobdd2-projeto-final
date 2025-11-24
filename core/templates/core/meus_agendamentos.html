@@ -1,33 +1,81 @@
 {% extends "core/base.html" %}
 
-{% block title %} Meus Agendamentos - Doe Vida{% endblock %}
+{% block title %}Meus Agendamentos - Doe Vida{% endblock %}
 
 {% block content %}
 
-<h2>Meus Agendamentos</h2>
+<div class="py-5">
+  <section class="container m-auto bg-light p-4 rounded shadow-sm">
 
-<table>
-<tr>
-    <th>Data</th>
-    <th>Campanha</th>
-    <th>Ponto</th>
-    <th>Status</th>
-    <th>Ações</th>
-</tr>
+    <!-- Cabeçalho -->
+    <header class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="text-danger fw-bold">Meus Agendamentos</h1>
+        <p class="text-muted mb-0">Veja suas próximas doações agendadas.</p>
+      </div>
 
-{% for ag in agendamentos %}
-<tr>
-    <td>{{ ag.data_agendada }}</td>
-    <td>{{ ag.campanha.nome }}</td>
-    <td>{{ ag.ponto.nome }}</td>
-    <td>{{ ag.status }}</td>
-    <td>
-        {% if ag.status == "agendado" %}
-            <a href="{% url 'cancelar_agendamento' ag.id %}">Cancelar</a>
-        {% endif %}
-    </td>
-</tr>
-{% endfor %}
-</table>
+      <a href="{% url 'agendamento' %}" class="btn btn-danger shadow-sm">
+        <i class="bi bi-calendar-plus"></i> Novo Agendamento
+      </a>
+    </header>
+
+    <!-- Tabela -->
+    <article class="bg-white p-4 rounded shadow-sm">
+      <h2 class="h5 text-danger mb-3">
+        <i class="bi bi-list-check"></i> Histórico de Agendamentos
+      </h2>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle text-center">
+          <thead class="table-danger">
+            <tr>
+              <th>#</th>
+              <th>Campanha</th>
+              <th>Data</th>
+              <th>Ponto de Coleta</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% if agendamentos %}
+              {% for a in agendamentos %}
+              <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.campanha.nome }}</td>
+                <td>{{ a.data_agendada|date:"d/m/Y" }}</td>
+                <td>
+                  {% if a.ponto %}
+                    <a href="{% url 'ponto_detail' a.ponto.id_ponto %}" class="text-decoration-none text-danger fw-semibold">
+                      {{ a.ponto.nome }}
+                    </a>
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if a.status == "Pendente" %}
+                    <span class="badge bg-warning text-dark">{{ a.status }}</span>
+                  {% elif a.status == "Concluído" %}
+                    <span class="badge bg-success">{{ a.status }}</span>
+                  {% else %}
+                    <span class="badge bg-secondary">{{ a.status }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-muted py-3">
+                  <i class="bi bi-info-circle"></i> Você ainda não possui agendamentos.
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</div>
 
 {% endblock %}

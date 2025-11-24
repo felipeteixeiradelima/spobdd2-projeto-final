@@ -28,52 +28,20 @@
             </tr>
           </thead>
 
-        <tbody>
-          {% if campanhas %}
-
-            {% for c in campanhas %}
+          <tbody id="campanhas-table-body">
             <tr>
-                <td scope="row">{{ c.id }}</td>
-                <td>{{ c.nome }}</td>
-                <td>{{ c.data_inicio|date:"d/m/Y" }}</td>
-                <td>{{ c.data_fim|date:"d/m/Y" }}</td>
-                <td>
-                  {% if c.status.lower == "ativa" %}
-                    <span class="badge bg-success">{{ c.status }}</span>
-                  {% elif c.status.lower == "planejada" %}
-                    <span class="badge bg-info">{{ c.status }}</span>
-                  {% elif c.status.lower == "cancelada" %}
-                    <span class="badge bg-danger">{{ c.status }}</span>
-                  {% else %}
-                    <span class="badge bg-dark">{{ c.status }}</span>
-                  {% endif %}
-                </td>
-                <td>
-                  <a href="{% url 'campanha_detail' c.id_campanha %}" class="btn btn-danger btn-sm gap-1 shadow-sm">
-                    <i class="bi bi-calendar-heart-fill"></i>
-                    Detalhes
-                  </a>
-                </td>
+              <td colspan="6" class="text-muted py-3">Carregando campanhas...</td>
             </tr>
-            {% endfor %}
-
-          {% else %}
-
-            <tr>
-              <td colspan="5" class="text-center text-muted py-3">Não há campanhas disponíveis no momento.</td>
-            </tr>
-
-          {% endif %}
-        </tbody>
+          </tbody>
         </table>
       </div>
     </article>
 
     <!-- TEXTO COMPLEMENTAR -->
     <section class="mt-5 text-center">
-      <p class="lead">Quer ver sua cidade na próxima campanha?</p>
+      <p class="lead">Quer fazer parte das próximas campanhas?</p>
       <a href="{% url "agendamento" %}" class="btn btn-danger">
-        <i class="bi bi-calendar2-heart"></i> Agende sua participação
+        <i class="bi bi-calendar2-heart"></i> Agende uma doação
       </a>
     </section>
   </section>
