@@ -201,7 +201,7 @@ if (currentURL.endsWith("/campanhas/")) {
     document.addEventListener("DOMContentLoaded", function() {
         const tbody = document.getElementById("campanhas-table-body");
 
-        fetch("{% url 'campanhas_json' %}")
+        fetch("ajax/campanhas-json")
             .then(response => response.json())
             .then(data => {
                 const campanhas = data.campanhas;
