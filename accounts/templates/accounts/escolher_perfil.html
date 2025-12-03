@@ -1,0 +1,25 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+
+<section class="d-flex align-items-center justify-content-center p-5">
+  <div class="card p-4 shadow-lg text-center">
+
+    <h3 class="fw-bold text-danger mb-4">Escolher Perfil</h3>
+    <p class="mb-4">Escolha como deseja acessar o sistema:</p>
+
+    {% if is_doador %}
+      <a href="{% url 'homepage' %}" class="btn btn-outline-danger w-100 mb-3">
+        Acessar como DOADOR
+      </a>
+    {% endif %}
+
+    {% if is_colaborador %}
+      <a href="{% url 'area_colaborador' %}" class="btn btn-danger w-100">
+        Acessar como COLABORADOR
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Área do Colaborador - Doe Vida{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <h1 class="text-danger fw-bold mb-4 text-center">
+        <i class="bi bi-person-badge"></i> Área do Colaborador
+    </h1>
+
+    <p class="text-center text-muted mb-5">
+        Acesse rapidamente as ferramentas administrativas do sistema.
+    </p>
+
+    <div class="row g-4">
+
+        <!-- CAMPANHAS -->
+        <div class="col-md-4">
+            <a href="{% url 'campanhas_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 card-hover card-hover-colaborador h-100 text-center p-4">
+                    <i class="bi bi-megaphone display-4 text-danger"></i>
+                    <h4 class="fw-bold text-dark mt-3">Campanhas</h4>
+                    <p class="text-muted">Gerenciar campanhas de doação de sangue</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- PONTOS DE COLETA -->
+        <div class="col-md-4">
+            <a href="{% url 'pontos_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 card-hover card-hover-colaborador h-100 text-center p-4">
+                    <i class="bi bi-geo-alt display-4 text-danger"></i>
+                    <h4 class="fw-bold text-dark mt-3">Pontos de Coleta</h4>
+                    <p class="text-muted">Gerenciar locais de coleta</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- DOAÇÕES -->
+        <div class="col-md-4">
+            <a href="{% url 'doacoes_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 card-hover card-hover-colaborador h-100 text-center p-4">
+                    <i class="bi bi-heart-pulse display-4 text-danger"></i>
+                    <h4 class="fw-bold text-dark mt-3">Doações</h4>
+                    <p class="text-muted">Registrar e visualizar doações</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- AMOSTRAS -->
+        <div class="col-md-4">
+            <a href="{% url 'amostras_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 card-hover card-hover-colaborador h-100 text-center p-4">
+                    <i class="bi bi-droplet-half display-4 text-danger"></i>
+                    <h4 class="fw-bold text-dark mt-3">Amostras</h4>
+                    <p class="text-muted">Gerenciar amostras de sangue</p>
+                </div>
+            </a>
+        </div>
+
+        {% comment %} <!-- DOADORES -->
+        <div class="col-md-4">
+            <a href="{% url 'doadores_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 card-hover card-hover-colaborador h-100 text-center p-4">
+                    <i class="bi bi-people display-4 text-danger"></i>
+                    <h4 class="fw-bold text-dark mt-3">Doadores</h4>
+                    <p class="text-muted">Gerenciar cadastro de doadores</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- COLABORADORES -->
+        <div class="col-md-4">
+            <a href="{% url 'colaboradores_list' %}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 card-hover card-hover-colaborador h-100 text-center p-4">
+                    <i class="bi bi-person-workspace display-4 text-danger"></i>
+                    <h4 class="fw-bold text-dark mt-3">Colaboradores</h4>
+                    <p class="text-muted">Gerenciar usuários internos</p>
+                </div>
+            </a>
+        </div> {% endcomment %}
+
+    </div>
+</div>
+
+{% endblock %}

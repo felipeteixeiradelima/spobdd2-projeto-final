@@ -1,0 +1,82 @@
+{% extends "core/base.html" %}
+
+{% block title %}Cadastrar Ponto de Coleta - Doe Vida{% endblock %}
+
+{% block content %}
+
+<section class="d-flex align-items-center justify-content-center cadastro">
+  <div class="card shadow-lg p-4 m-5 cadastro" style="max-width: 700px;">
+    <h3 class="text-center text-danger fw-bold mb-4">Cadastro de Ponto de Coleta</h3>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- DADOS DO PONTO -->
+      <hr class="mt-0 mb-4">
+      <h5 class="text-danger fw-bold mb-3">Informações do Ponto</h5>
+
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Nome</label>
+          <input type="text" name="nome" class="form-control" required>
+        </div>
+      </div>
+
+      <!-- ENDEREÇO -->
+      <hr class="my-4">
+      <h5 class="text-danger fw-bold mb-3">Endereço</h5>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">CEP</label>
+          <input type="text" name="cep" class="form-control" placeholder="00000-000" required>
+        </div>
+
+        <div class="col-md-8">
+          <label class="form-label">Logradouro</label>
+          <input type="text" name="logradouro" class="form-control" required>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Número</label>
+          <input type="text" name="numero" class="form-control" required>
+        </div>
+
+        <div class="col-md-9">
+          <label class="form-label">Complemento</label>
+          <input type="text" name="complemento" class="form-control">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Bairro</label>
+          <input type="text" name="bairro" class="form-control" required>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Cidade</label>
+          <input type="text" name="cidade" class="form-control" required>
+        </div>
+
+        <div class="col-md-2">
+          <label class="form-label">UF</label>
+          <select name="estado" class="form-select" required>
+            {% for sigla, nome in form.fields.estado.choices %}
+            <option value="{{ sigla }}">{{ nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="text-danger mt-3">{{ form.errors }}</div>
+
+      <hr class="my-4">
+
+      <button type="submit" class="btn btn-danger w-100">
+        Cadastrar Ponto de Coleta
+      </button>
+    </form>
+
+  </div>
+</section>
+
+{% endblock %}

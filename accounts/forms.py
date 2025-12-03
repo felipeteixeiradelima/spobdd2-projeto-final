@@ -1,7 +1,6 @@
 from re import sub
 from django import forms
-from django.contrib.auth.models import User
-from accounts.models import Doador, Endereco
+from accounts.models import Doador, Endereco, Colaborador
 
 class DoadorCreateForm(forms.ModelForm):
     # Campos de usuário
@@ -35,5 +34,32 @@ class DoadorCreateForm(forms.ModelForm):
         cep = cleaned.get("cep")
         if cep:
             cleaned["cep"] = sub(r"\D", "", cep)
+
+        return cleaned
+
+class ColaboradorCreateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput())
+    confirmarSenha = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+    # Override do cpf para aceirar a máscara
+    cpf = forms.CharField(max_length=14, required=True)
+
+    class Meta:
+        model = Colaborador
+        fields = ["nome", "cpf", "data_nasc", "telefone", "cargo"]
+
+    def clean(self):
+        cleaned = super().clean()
+
+        cpf = cleaned.get("cpf")
+        if cpf:
+            cleaned["cpf"] = sub(r"\D", "", cpf)
+
+        senha = cleaned.get("password")
+        confirmar = cleaned.get("confirmarSenha")
+
+        if senha and confirmar and senha != confirmar:
+            raise forms.ValidationError("As senhas não coincidem.")
 
         return cleaned

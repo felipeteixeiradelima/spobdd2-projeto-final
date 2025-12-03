@@ -4,9 +4,10 @@ const currentURL = window.location.href;
 // ============================== AGENDAMENTO ==============================
 
 if (currentURL.endsWith("/agendamento/")) {
-    // AJAX que pega os Pontos de Coleta para a campanha selecionada pelo usuário
 
     document.addEventListener("DOMContentLoaded", function () {
+
+        // AJAX que pega os Pontos de Coleta para a campanha selecionada pelo usuário
         const campoCampanha = document.getElementById("id_campanha");
         const campoPonto = document.getElementById("id_ponto");
 
@@ -197,69 +198,73 @@ if (currentURL.endsWith("/login/") | currentURL.endsWith("/cadastro/")) {
 
 if (currentURL.endsWith("/campanhas/")) {
 
+    // DataTables
+    $("#campanhasTable").DataTable({
+        ajax: {
+            url: "/ajax/campanhas-json"
+        },
+        columns: [
+            { data: "id" },
+            { data: "nome" },
+            { data: "data_inicio" },
+            { data: "data_fim" },
+            { 
+                data: "status",
+                render: function (data) {
+                    let badgeClass = {
+                        "Ativa": "success",
+                        "Planejada": "primary",
+                        "Cancelada": "danger",
+                        "Finalizada": "secondary"
+                    }[data] || "secondary";
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const tbody = document.getElementById("campanhas-table-body");
-
-        fetch("/ajax/campanhas-json")
-            .then(response => response.json())
-            .then(data => {
-                const campanhas = data.campanhas;
-
-                tbody.innerHTML = ""; // limpa "Carregando"
-
-                if (campanhas.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                        <td colspan="6" class="text-center text-muted py-3">
-                            Não há campanhas disponíveis no momento.
-                        </td>
-                        </tr>`;
-                    return;
+                    return `<span class="badge bg-${badgeClass}">${data}</span>`;
                 }
+            },
+            {
+                data: "detail_url",
+                render: function (url) {
+                    return `
+                        <a href="${url}" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-calendar-heart"></i> Detalhes
+                        </a>`;
+                }
+            }
+        ],
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+        },
+        responsive: true,
+        autoWidth: false
+    });
+}
 
-                campanhas.forEach(c => {
-                    let statusClass
+// ============================== MEUS AGENDAMENTOS ==============================
+if (currentURL.endsWith("/meus-agendamentos/")) {
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        // DataTables
+        $("#agendamentosTable").DataTable({
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+            },
+            responsive: true,
+            autoWidth: false
+        });
+    });
+}
 
-                    switch (c.status) {
-                        case "Ativa":
-                            statusClass = "badge bg-success"
-                            break;
-                        case "Planejada":
-                            statusClass = "badge bg-primary"
-                            break;
-                        case "Cancelada":
-                            statusClass = "badge bg-danger"
-                            break;
-                        default:
-                            statusClass = "badge bg-secondary"
-                            break;
-                    }
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${c.id}</td>
-                            <td>${c.nome}</td>
-                            <td>${c.data_inicio}</td>
-                            <td>${c.data_fim}</td>
-                            <td>
-                                <span class="${statusClass}">${c.status}</span>
-                            </td>
-                            <td>
-                                <a href="${c.detail_url}" class="btn btn-outline-danger btn-sm">
-                                    <i class="bi bi-calendar-heart"></i> Detalhes
-                                </a>
-                            </td>
-                        </tr>
-                    `;
-                });
-            })
-            .catch(() => {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center text-danger py-3">
-                            Erro ao carregar campanhas. Tente novamente mais tarde.
-                        </td>
-                    </tr>`;
-            });
+// ============================== PONTOS DE COLETA ==============================
+if (currentURL.endsWith("/pontos/")) {
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        // DataTables
+        $('#pontosTable').DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+            },
+            responsive: true,
+            autoWidth: false
+        });
     });
 }

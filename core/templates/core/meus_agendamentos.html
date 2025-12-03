@@ -26,7 +26,7 @@
       </h2>
 
       <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle text-center">
+        <table id="agendamentosTable" class="table table-striped table-hover align-middle text-center">
           <thead class="table-danger">
             <tr>
               <th>#</th>
@@ -41,7 +41,7 @@
             {% if agendamentos %}
               {% for a in agendamentos %}
               <tr>
-                <td>{{ a.id }}</td>
+                <td>{{ a.id_agendamento }}</td>
                 <td>{{ a.campanha.nome }}</td>
                 <td>{{ a.data_agendada|date:"d/m/Y" }}</td>
                 <td>

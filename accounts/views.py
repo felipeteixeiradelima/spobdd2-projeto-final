@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from accounts.forms import DoadorCreateForm
+from accounts.forms import ColaboradorCreateForm, DoadorCreateForm
 from accounts.models import Endereco
 
 class CustomAuthForm(AuthenticationForm):
@@ -55,3 +55,43 @@ def cadastro_doador(request):
         form = DoadorCreateForm()
 
     return render(request, "accounts/cadastro.html", {"form": form})
+
+def cadastro_colaborador(request):
+    if request.method == "POST":
+        form = ColaboradorCreateForm(request.POST)
+
+        if form.is_valid():
+
+            email = form.cleaned_data["email"]
+
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=form.cleaned_data["password"]
+            )
+
+            colaborador = form.save(commit=False)
+            colaborador.user = user
+            colaborador.email = email
+            colaborador.save()
+
+            messages.success(request, "Colaborador cadastrado com sucesso!")
+            
+            next_url = request.session.pop("return_to_campanha", None)
+            if next_url:
+                return redirect("cadastrar_campanha")
+
+            return redirect("login")
+
+    else:
+        form = ColaboradorCreateForm()
+
+    return render(request, "accounts/cadastro_colaborador.html", {"form": form})
+
+def escolher_perfil(request):
+    user = request.user
+
+    return render(request, "accounts/escolher_perfil.html", {
+        "is_doador": hasattr(user, "doador_profile"),
+        "is_colaborador": hasattr(user, "colaborador_profile"),
+    })

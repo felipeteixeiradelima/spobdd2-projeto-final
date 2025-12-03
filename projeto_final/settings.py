@@ -124,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_URL = "login"
 
-LOGIN_REDIRECT_URL = "homepage"
+LOGIN_REDIRECT_URL = "escolher_perfil"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

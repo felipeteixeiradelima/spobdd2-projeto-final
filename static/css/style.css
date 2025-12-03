@@ -137,3 +137,20 @@ div.login {
   color: #b22222 !important;
   font-family: 'Times New Roman', Times, serif;
 }
+
+.dataTables_wrapper {
+    width: 100%;
+}
+
+.table {
+    width: 100% !important;
+}
+
+.card-hover-colaborador {
+    transition: 0.2s ease-in-out;
+}
+
+.card-hover-colaborador:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+}

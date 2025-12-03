@@ -15,8 +15,14 @@
           <li class="nav-item"><a class="nav-link" href="{% url "campanhas_list" %}">Campanhas</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url "meus_agendamentos" %}">Agendamentos</a></li>
           <li class="nav-item me-2"><a class="nav-link" href="{% url "sobre" %}">Sobre</a></li>
+          
         </ul>
         <aside class="my-2">
+          {% if user.is_authenticated and request.user.colaborador_profile %}
+          <a href="{% url "area_colaborador" %}" class="btn btn-danger me-1">
+            <i class="bi bi-person-badge"></i>Área do colaborador
+          </a>
+          {% endif %}
           {% if user.is_authenticated %}
             <form action="{% url 'logout' %}" method="post" style="display:inline;">
               {% csrf_token %}

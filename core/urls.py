@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import homepage, agendamento_view, get_pontos_por_campanha, meus_agendamentos, cancelar_agendamento, campanhas_list, campanha_detail, about, ponto_detail, campanhas_json
+from .views import *
 
 
 urlpatterns = [
@@ -13,4 +13,26 @@ urlpatterns = [
     path("campanhas/<int:id_campanha>/", campanha_detail, name="campanha_detail"),
     path("ponto/<int:ponto_id>/", ponto_detail, name="ponto_detail"),
     path("ajax/campanhas-json/", campanhas_json, name="campanhas_json"),
+    path("pontos/cadastrar/", cadastrar_ponto, name="cadastrar_ponto"),
+    path("campanhas/<int:id_campanha>/editar/", editar_campanha, name="editar_campanha"),
+    path("pontos/<int:id_ponto>/editar/", editar_ponto, name="editar_ponto"),
+    path("campanhas/nova/", cadastrar_campanha, name="cadastrar_campanha"),
+    path("pontos/", pontos_list, name="pontos_list"),
+    path("campanhas/<int:id_campanha>/excluir/", campanha_delete, name="campanha_delete"),
+    path("ponto/<int:ponto_id>/excluir/", ponto_delete, name="ponto_delete"),
+    path("amostras/", amostras_list, name="amostras_list"),
+    path("amostras/nova/", amostra_create, name="amostra_create"),
+    path("amostras/<int:id_amostra>/", amostra_detail, name="amostra_detail"),
+    path("amostras/<int:id_amostra>/editar/", amostra_edit, name="amostra_edit"),
+    path("amostras/", amostras_list, name="amostras_list"),
+    path("amostras/nova/", amostra_create, name="amostra_create"),
+    path("amostras/<int:id_amostra>/", amostra_detail, name="amostra_detail"),
+    path("amostras/<int:id_amostra>/editar/", amostra_edit, name="amostra_edit"),
+    path("doacoes/", doacoes_list, name="doacoes_list"),
+    path("doacoes/nova/", doacao_create, name="doacao_create"),
+    path("doacoes/<int:id_doacao>/", doacao_detail, name="doacao_detail"),
+    path("doacoes/<int:id_doacao>/editar/", doacao_edit, name="doacao_edit"),
+    path("doacoes/<int:id_doacao>/excluir/", doacao_delete, name="doacao_delete"),
+    path("amostras/<int:id_amostra>/excluir/", amostra_delete, name="amostra_delete"),
+    path("colaborador/", area_colaborador, name="area_colaborador"),
 ]

@@ -91,6 +91,16 @@
                     </a>
                 {% endif %}
 
+                <!-- EDITAR E EXCLUIR (se usuário for colaborador) -->
+                {% if request.user.colaborador_profile %}
+                    <a href="{% url 'editar_campanha' campanha.id_campanha %}" class="btn btn-danger">
+                        <i class="bi bi-pencil"></i> Editar campanha
+                    </a>
+                    <a href="{% url 'campanha_delete' campanha.id_campanha %}" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> Excluir campanha
+                    </a>
+                {% endif %}
+
             </div>
 
         </div>

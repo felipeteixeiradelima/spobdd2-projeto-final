@@ -8,7 +8,7 @@
 
     <header class="text-center mb-4">
         <h1 class="text-danger fw-bold">{{ ponto.nome }}</h1>
-        <p class="text-muted">Informações  este ponto de coleta</p>
+        <p class="text-muted">Informações sobre este ponto de coleta</p>
     </header>
 
     <div class="card shadow-sm border-0">
@@ -37,6 +37,17 @@
                 <a href="{% url 'agendamento' %}" class="btn btn-danger">
                     <i class="bi bi-calendar2-heart"></i> Agendar doação
                 </a>
+
+                {% if user.is_authenticated and user.colaborador_profile %}
+                    <a href="{% url 'editar_ponto' ponto.id_ponto %}" class="btn btn-danger">
+                        <i class="bi bi-pencil"></i> Editar ponto
+                    </a>
+                    <a href="{% url 'ponto_delete' ponto.id_ponto %}" 
+                    class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> Excluir ponto
+                    </a>
+                {% endif %}
+
             </div>
 
         </div>

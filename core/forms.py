@@ -1,7 +1,10 @@
+from re import sub
+
 from django import forms
 from django.utils.timezone import now
 from datetime import timedelta
-from core.models import Agendamento, Campanha, PontoColeta, Doacao, PontoCampanha
+from accounts.models import Colaborador, Endereco
+from core.models import Agendamento, Campanha, PontoColeta, Doacao, PontoCampanha, AmostraSangue
 
 
 class AgendamentoForm(forms.ModelForm):
@@ -90,3 +93,109 @@ class AgendamentoForm(forms.ModelForm):
             raise forms.ValidationError("Este ponto não pertence à campanha selecionada.")
 
         return cleaned
+
+class PontoColetaCreateForm(forms.ModelForm):
+    # Campos do endereço (embutidos)
+    cep = forms.CharField(max_length=9, required=True)
+    logradouro = forms.CharField(max_length=150, required=True)
+    numero = forms.CharField(max_length=10, required=True)
+    complemento = forms.CharField(max_length=50, required=False)
+    bairro = forms.CharField(max_length=100, required=True)
+    cidade = forms.CharField(max_length=100, required=True)
+    estado = forms.ChoiceField(choices=Endereco.UF_CHOICES, required=True)
+
+    class Meta:
+        model = PontoColeta
+        fields = ["nome"]
+
+    def clean_cep(self):
+        cep = self.cleaned_data["cep"]
+        return sub(r"\D", "", cep)
+
+class CampanhaCreateForm(forms.ModelForm):
+    colaboradores = forms.ModelMultipleChoiceField(
+        queryset=Colaborador.objects.all(),
+        required=False,
+        widget=forms.SelectMultiple(attrs={"class": "form-select"})
+    )
+
+    pontos = forms.ModelMultipleChoiceField(
+        queryset=PontoColeta.objects.all(),
+        required=False,
+        widget=forms.SelectMultiple(attrs={"class": "form-select"})
+    )
+
+    class Meta:
+        model = Campanha
+        fields = [
+            "nome",
+            "descricao",
+            "data_inicio",
+            "data_fim",
+            "publico_alvo",
+            "status",
+            "colaboradores",
+            "pontos",
+        ]
+        widgets = {
+            "data_inicio": forms.DateInput(attrs={"type": "date"}),
+            "data_fim": forms.DateInput(attrs={"type": "date"}),
+        }
+
+class EditarCampanhaForm(forms.ModelForm):
+    class Meta:
+        model = Campanha
+        fields = ["nome", "descricao", "data_inicio", "data_fim", "status", "publico_alvo"]
+        widgets = {
+            "data_inicio": forms.DateInput(attrs={"type": "date"}),
+            "data_fim": forms.DateInput(attrs={"type": "date"}),
+        }
+
+class EditarPontoForm(forms.ModelForm):
+    # campos do endereço
+    cep = forms.CharField()
+    logradouro = forms.CharField()
+    numero = forms.CharField()
+    complemento = forms.CharField(required=False)
+    bairro = forms.CharField()
+    cidade = forms.CharField()
+    estado = forms.ChoiceField(choices=Endereco.UF_CHOICES)
+
+    class Meta:
+        model = PontoColeta
+        fields = ["nome"]
+
+    def __init__(self, *args, **kwargs):
+        ponto = kwargs.pop("ponto")
+        super().__init__(*args, **kwargs)
+
+        endereco = ponto.endereco
+        self.fields["cep"].initial = endereco.cep
+        self.fields["logradouro"].initial = endereco.logradouro
+        self.fields["numero"].initial = endereco.numero
+        self.fields["complemento"].initial = endereco.complemento
+        self.fields["bairro"].initial = endereco.bairro
+        self.fields["cidade"].initial = endereco.cidade
+        self.fields["estado"].initial = endereco.estado
+
+class AmostraForm(forms.ModelForm):
+    class Meta:
+        model = AmostraSangue
+        fields = ["tipo_sang", "quantidade_ml", "validade", "status"]
+        widgets = {
+            "validade": forms.DateInput(attrs={"type": "date"})
+        }
+
+
+class DoacaoForm(forms.ModelForm):
+    criar_amostra = forms.BooleanField(
+        required=False,
+        label="Cadastrar nova amostra agora?"
+    )
+
+    class Meta:
+        model = Doacao
+        fields = ["data_doacao", "doador", "campanha", "ponto", "amostra"]
+        widgets = {
+            "data_doacao": forms.DateInput(attrs={"type": "date"})
+        }
