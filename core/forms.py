@@ -193,16 +193,30 @@ class AmostraForm(forms.ModelForm):
         model = AmostraSangue
         fields = ["tipo_sang", "quantidade_ml", "validade", "status"]
         widgets = {
-            "validade": forms.DateInput(attrs={"type": "date"})
+            "validade": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Se o form foi instanciado com uma instance (editar), força initial no formato ISO
+        if self.instance and getattr(self.instance, "validade", None):
+            self.fields["validade"].initial = self.instance.validade.strftime("%Y-%m-%d")
 
 class DoacaoForm(forms.ModelForm):
     class Meta:
         model = Doacao
         fields = ['doador', 'campanha', 'ponto', 'data_doacao']
         widgets = {
-            'data_doacao': forms.DateInput(attrs={'type': 'date'}),
+            'data_doacao': forms.DateInput(format="%Y-%m-%d", attrs={'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Se o form foi instanciado com uma instance (editar), força initial no formato ISO
+        if self.instance and getattr(self.instance, "data_doacao", None):
+            self.fields["data_doacao"].initial = self.instance.data_doacao.strftime("%Y-%m-%d")
 
 class EditarColaboradorForm(forms.ModelForm):
     email = forms.EmailField(required=True)
