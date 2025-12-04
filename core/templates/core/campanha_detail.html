@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="container py-5">
+<div class="container py-5 mt-5">
 
     <!-- TÍTULO -->
     <header class="text-center mb-4">
@@ -50,7 +50,11 @@
             <h5 class="fw-bold text-danger mt-4">
                 <i class="bi bi-people"></i> Público-alvo
             </h5>
-            <p class="text-muted">{{ campanha.publico_alvo }}</p>
+            {% if campanha.publico_alvo %}
+                <p class="text-muted">{{ campanha.publico_alvo }}</p>
+            {% else %}
+                <p class="text-muted">(Sem público-alvo)</p>
+            {% endif %}
 
             <!-- PONTOS DE COLETA RELACIONADOS -->
             <h5 class="fw-bold text-danger mt-4">
@@ -93,7 +97,7 @@
 
                 <!-- EDITAR E EXCLUIR (se usuário for colaborador) -->
                 {% if request.user.colaborador_profile %}
-                    <a href="{% url 'editar_campanha' campanha.id_campanha %}" class="btn btn-danger">
+                    <a href="{% url 'campanha_edit' campanha.id_campanha %}" class="btn btn-danger">
                         <i class="bi bi-pencil"></i> Editar campanha
                     </a>
                     <a href="{% url 'campanha_delete' campanha.id_campanha %}" class="btn btn-outline-danger">

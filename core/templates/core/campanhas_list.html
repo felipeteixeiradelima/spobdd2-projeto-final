@@ -4,12 +4,20 @@
 
 {% block content %}
 
-<div class="py-5">
+<div class="py-5 mt-5">
   <section class="container m-auto bg-light">
     <header class="text-center mb-5">
       <h1 class="text-danger fw-bold">Campanhas de Doação</h1>
       <p class="lead">Veja nossas campanhas ativas e passadas — participe, compartilhe e salve vidas!</p>
     </header>
+
+    {% if request.user.colaborador_profile %}
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'cadastrar_campanha' %}" class="btn btn-danger">
+            <i class="bi bi-plus-circle"></i> Nova campanha
+        </a>
+    </div>
+    {% endif %}
 
     <!-- TABELA DE CAMPANHAS -->
     <article class="bg-white p-4 rounded shadow-sm">
@@ -34,12 +42,14 @@
     </article>
 
     <!-- TEXTO COMPLEMENTAR -->
-    <section class="mt-5 text-center">
-      <p class="lead">Quer fazer parte das próximas campanhas?</p>
-      <a href="{% url "agendamento" %}" class="btn btn-danger">
-        <i class="bi bi-calendar2-heart"></i> Agende uma doação
-      </a>
-    </section>
+    {% if not request.user.colaborador_profile %}
+      <section class="mt-5 text-center">
+        <p class="lead">Quer fazer parte das próximas campanhas?</p>
+        <a href="{% url "agendamento" %}" class="btn btn-danger">
+          <i class="bi bi-calendar2-heart"></i> Agende uma doação
+        </a>
+      </section>
+    {% endif %}
   </section>
 </div>
 

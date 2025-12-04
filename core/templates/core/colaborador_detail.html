@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+{% block title %}{{ colaborador.nome }} - Doe Vida{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <h1 class="text-danger fw-bold mb-4">
+        <i class="bi bi-person-badge-fill"></i> {{ colaborador.nome }}
+    </h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <p><strong>CPF:</strong> {{ colaborador.cpf_formatado }}</p>
+            <p><strong>Email:</strong> {{ colaborador.email }}</p>
+            <p><strong>Telefone:</strong> {{ colaborador.telefone }}</p>
+            <p><strong>Cargo:</strong> {{ colaborador.cargo }}</p>
+
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{% url 'colaboradores_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+
+        <a href="{% url 'colaborador_delete' colaborador.id_colaborador %}" class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Excluir
+        </a>
+    </div>
+
+</div>
+{% endblock %}

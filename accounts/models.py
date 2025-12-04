@@ -80,6 +80,9 @@ class Doador(models.Model):
     def __str__(self):
         return f"{self.nome} ({self.tipo_sang})"
 
+    def cpf_formatado(self):
+        return "{}.{}.{}-{}".format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])
+
 
 class Colaborador(models.Model):
     id_colaborador = models.BigAutoField(primary_key=True)
@@ -93,3 +96,6 @@ class Colaborador(models.Model):
 
     def __str__(self):
         return f"{self.nome} - {self.cargo or 'Colaborador'}"
+
+    def cpf_formatado(self):
+        return "{}.{}.{}-{}".format(self.cpf[:3], self.cpf[3:6], self.cpf[6:9], self.cpf[9:])

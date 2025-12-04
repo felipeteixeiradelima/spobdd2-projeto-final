@@ -42,7 +42,6 @@ class ColaboradorCreateForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     confirmarSenha = forms.CharField(widget=forms.PasswordInput(), required=True)
 
-    # Override do cpf para aceirar a máscara
     cpf = forms.CharField(max_length=14, required=True)
 
     class Meta:
@@ -63,3 +62,20 @@ class ColaboradorCreateForm(forms.ModelForm):
             raise forms.ValidationError("As senhas não coincidem.")
 
         return cleaned
+
+class EditarDoadorForm(forms.ModelForm):
+    class Meta:
+        model = Doador
+        fields = ["nome", "cpf", "data_nasc", "sexo", "tipo_sang", "telefone", "email"]
+
+
+class EditarEnderecoForm(forms.ModelForm):
+    class Meta:
+        model = Endereco
+        fields = ["cep", "logradouro", "numero", "complemento", "bairro", "cidade", "estado"]
+
+
+class EditarColaboradorForm(forms.ModelForm):
+    class Meta:
+        model = Colaborador
+        fields = ["nome", "cpf", "data_nasc", "telefone", "email", "cargo"]

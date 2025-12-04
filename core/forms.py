@@ -147,9 +147,19 @@ class EditarCampanhaForm(forms.ModelForm):
         model = Campanha
         fields = ["nome", "descricao", "data_inicio", "data_fim", "status", "publico_alvo"]
         widgets = {
-            "data_inicio": forms.DateInput(attrs={"type": "date"}),
-            "data_fim": forms.DateInput(attrs={"type": "date"}),
+            # define explicitamente o formato ISO que <input type="date"> exige
+            "data_inicio": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            "data_fim": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Se o form foi instanciado com uma instance (editar), força initial no formato ISO
+        if self.instance and getattr(self.instance, "data_inicio", None):
+            self.fields["data_inicio"].initial = self.instance.data_inicio.strftime("%Y-%m-%d")
+        if self.instance and getattr(self.instance, "data_fim", None):
+            self.fields["data_fim"].initial = self.instance.data_fim.strftime("%Y-%m-%d")
 
 class EditarPontoForm(forms.ModelForm):
     # campos do endereço
@@ -199,3 +209,27 @@ class DoacaoForm(forms.ModelForm):
         widgets = {
             "data_doacao": forms.DateInput(attrs={"type": "date"})
         }
+
+
+class EditarColaboradorForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput())
+    confirmarSenha = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+    cpf = forms.CharField(max_length=14, required=True)
+
+    class Meta:
+        model = Colaborador
+        fields = ["nome", "cpf", "data_nasc", "telefone", "cargo"]
+        widgets = {
+            "data_nasc": forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Se o form foi instanciado com uma instance (editar), força initial no formato ISO
+        if self.instance and getattr(self.instance, "email", None):
+            self.fields["email"].initial = self.instance.email
+        if self.instance and getattr(self.instance, "data_fim", None):
+            self.fields["data_nasc"].initial = self.instance.data_nasc.strftime("%Y-%m-%d")

@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% block title %}Minha Conta{% endblock %}
+
+{% block content %}
+
+<div class="container py-5 mt-4">
+    <h1 class="text-danger fw-bold mb-4 text-center">Minha Conta</h1>
+
+    <!-- ============================
+         INFORMAÇÕES DO DOADOR
+    ============================ -->
+    {% if doador %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+
+            <h3 class="text-danger fw-bold mb-3">
+                <i class="bi bi-droplet"></i> Informações do Doador
+            </h3>
+
+            <!-- Dados pessoais -->
+            <h5 class="fw-bold text-danger">Dados pessoais</h5>
+            <p><strong>Nome:</strong> {{ doador.nome }}</p>
+            <p><strong>CPF:</strong> {{ doador.cpf }}</p>
+            <p><strong>Email:</strong> {{ doador.email }}</p>
+            <p><strong>Telefone:</strong> {{ doador.telefone }}</p>
+            <p><strong>Data de Nascimento:</strong> {{ doador.data_nasc|date:"d/m/Y" }}</p>
+
+            <a href="{% url 'minha_conta_editar_doador' %}" class="btn btn-danger mt-2">
+                <i class="bi bi-pencil-square"></i> Editar Dados Pessoais
+            </a>
+
+            <hr>
+
+            <!-- Endereço -->
+            <h5 class="fw-bold text-danger">Endereço</h5>
+            {% if doador.endereco %}
+                <p><strong>CEP:</strong> {{ doador.endereco.cep }}</p>
+                <p><strong>Logradouro:</strong> {{ doador.endereco.logradouro }}</p>
+                <p><strong>Número:</strong> {{ doador.endereco.numero }}</p>
+                <p><strong>Bairro:</strong> {{ doador.endereco.bairro }}</p>
+                <p><strong>Cidade:</strong> {{ doador.endereco.cidade }} - {{ doador.endereco.estado }}</p>
+
+                <a href="{% url 'minha_conta_editar_endereco' %}" class="btn btn-danger mt-2">
+                    <i class="bi bi-pencil-square"></i> Editar Endereço
+                </a>
+            {% else %}
+                <p class="text-muted">(Nenhum endereço cadastrado)</p>
+            {% endif %}
+
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ============================
+         INFORMAÇÕES DO COLABORADOR
+    ============================ -->
+    {% if colaborador %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+
+            <h3 class="text-danger fw-bold mb-3">
+                <i class="bi bi-briefcase"></i> Informações do Colaborador
+            </h3>
+
+            <p><strong>Nome:</strong> {{ colaborador.nome }}</p>
+            <p><strong>CPF:</strong> {{ colaborador.cpf }}</p>
+            <p><strong>Email:</strong> {{ colaborador.email }}</p>
+            <p><strong>Cargo:</strong> {{ colaborador.cargo }}</p>
+
+            <a href="{% url 'minha_conta_editar_colaborador' %}" class="btn btn-danger mt-2">
+                <i class="bi bi-pencil-square"></i> Editar Informações
+            </a>
+
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- =============================
+         EXCLUIR CONTA
+    ============================= -->
+    <div class="text-center mt-4">
+        <a href="{% url 'excluir_conta' %}" class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Excluir minha conta
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

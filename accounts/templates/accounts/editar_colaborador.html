@@ -1,0 +1,65 @@
+{% extends "accounts/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Editar Informações do Colaborador - Doe Vida{% endblock %}
+
+{% block content %}
+<section class="d-flex align-items-center justify-content-center cadastro">
+  <div class="card shadow-lg p-4 m-5 cadastro">
+
+    <h3 class="text-center text-danger fw-bold mb-4">Editar Informações do Colaborador</h3>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <hr class="mt-0 mb-4">
+      <h5 class="text-danger fw-bold mb-3">Dados do colaborador</h5>
+
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <label class="form-label">Nome</label>
+          {{ form.nome|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">CPF</label>
+          {{ form.cpf|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-12">
+          <label class="form-label">Email</label>
+          {{ form.email|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Telefone</label>
+          {{ form.telefone|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Cargo</label>
+          {{ form.cargo|add_class:"form-control" }}
+        </div>
+
+      </div>
+
+      {% if form.errors %}
+        <div class="text-danger mt-3">
+          {{ form.errors }}
+        </div>
+      {% endif %}
+
+      <hr class="my-4">
+      <div class="d-flex justify-content-between">
+        <a href="{% url 'minha_conta' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+        <button type="submit" class="btn btn-danger">Salvar alterações</button>
+      </div>
+
+    </form>
+
+  </div>
+</section>
+{% endblock %}

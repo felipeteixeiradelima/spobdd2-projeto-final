@@ -1,7 +1,8 @@
+from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from core.forms import AgendamentoForm, EditarCampanhaForm, PontoColetaCreateForm, EditarPontoForm, CampanhaCreateForm, AmostraForm, DoacaoForm
+from core.forms import AgendamentoForm, EditarCampanhaForm, PontoColetaCreateForm, EditarPontoForm, CampanhaCreateForm, AmostraForm, DoacaoForm, EditarColaboradorForm
 from accounts.models import Doador, Colaborador, Endereco
 from django.http import JsonResponse
 from core.models import PontoColeta, PontoCampanha, Agendamento, Campanha, CampanhaColaborador, AmostraSangue
@@ -12,7 +13,7 @@ def colaborador_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated or not hasattr(request.user, "colaborador_profile"):
             messages.error(request, "Acesso permitido apenas para colaboradores.")
-            return redirect("login")
+            return redirect("homepage")
         return view_func(request, *args, **kwargs)
     return wrapper
 
@@ -169,11 +170,12 @@ def cadastrar_ponto(request):
 
             messages.success(request, "Ponto de coleta cadastrado com sucesso!")
 
-            next_url = request.session.pop("return_to_campanha", None)
-            if next_url:
-                return redirect("cadastrar_campanha")
+            next_url = request.GET.get("next") or request.POST.get("next")
 
-            return redirect("pontos_list")  # ou outra página da sua escolha
+            if next_url:
+                return redirect(next_url)
+
+            return redirect("pontos_list")
 
     else:
         form = PontoColetaCreateForm()
@@ -182,7 +184,7 @@ def cadastrar_ponto(request):
 
 @login_required
 @colaborador_required
-def editar_campanha(request, id_campanha):
+def campanha_edit(request, id_campanha):
     campanha = get_object_or_404(Campanha, id_campanha=id_campanha)
 
     if request.method == "POST":
@@ -194,7 +196,7 @@ def editar_campanha(request, id_campanha):
     else:
         form = EditarCampanhaForm(instance=campanha)
 
-    return render(request, "core/editar_campanha.html", {"form": form, "campanha": campanha})
+    return render(request, "core/campanha_edit.html", {"form": form, "campanha": campanha})
 
 @login_required
 @colaborador_required
@@ -237,15 +239,6 @@ def cadastrar_campanha(request):
     if request.method == "POST":
         form = CampanhaCreateForm(request.POST)
 
-        if "add_colaborador" in request.POST:
-            # salva dados do form temporariamente
-            request.session["campanha_form_data"] = request.POST
-            return redirect("cadastrar_colaborador")
-
-        if "add_ponto" in request.POST:
-            request.session["campanha_form_data"] = request.POST
-            return redirect("cadastrar_ponto")
-
         if form.is_valid():
             campanha = form.save()
 
@@ -263,7 +256,7 @@ def cadastrar_campanha(request):
                 )
 
             messages.success(request, "Campanha cadastrada com sucesso!")
-            return redirect("campanha_detail", id_campanha=campanha.id_campanha)
+            return redirect("campanhas_list")
 
     else:
         if initial_data:
@@ -454,3 +447,47 @@ def doacao_delete(request, id_doacao):
 @colaborador_required
 def area_colaborador(request):
     return render(request, "core/area_colaborador.html")
+
+@login_required
+@colaborador_required
+def colaboradores_list(request):
+    colaboradores = Colaborador.objects.all()
+    return render(request, "core/colaboradores_list.html", {"colaboradores": colaboradores})
+
+@login_required
+@colaborador_required
+def colaborador_detail(request, id_colaborador):
+    colaborador = get_object_or_404(Colaborador, id_colaborador=id_colaborador)
+    return render(request, "core/colaborador_detail.html", {"colaborador": colaborador})
+
+@login_required
+@colaborador_required
+def colaborador_delete(request, id_colaborador):
+    colaborador = get_object_or_404(Colaborador, id_colaborador=id_colaborador)
+
+    if request.method == "POST":
+        colaborador.delete()
+        messages.success(request, "Colaborador excluído com sucesso!")
+        return redirect("colaborador_detail", id_colaborador)
+
+    return render(request, "core/confirm_delete.html", {
+        "obj": colaborador,
+        "type": "campanha",
+        "back_url": "colaborador_detail",
+        "id": id_colaborador
+    })
+
+@login_required
+@colaborador_required
+def doadores_list(request):
+    doadores = Doador.objects.all().order_by("id_doador")
+    return render(request, "core/doadores_list.html", {"doadores": doadores})
+
+@login_required
+@colaborador_required
+def doador_detail(request, id_doador):
+    doador = get_object_or_404(Doador, id_doador=id_doador)
+
+    return render(request, "core/doador_detail.html", {
+        "doador": doador,
+    })

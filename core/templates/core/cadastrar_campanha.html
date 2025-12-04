@@ -1,8 +1,10 @@
 {% extends "core/base.html" %}
+{% load widget_tweaks %}
+
 {% block title %}Cadastrar Campanha - Doe Vida{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<section class="container py-5 mt-5">
     <div class="card shadow-sm p-4 mx-auto" style="max-width: 700px;">
         <h2 class="text-danger fw-bold mb-4">Cadastrar Nova Campanha</h2>
 
@@ -53,7 +55,7 @@
                 <label class="form-label fw-semibold">Colaboradores envolvidos</label>
                 {{ form.colaboradores }}
 
-                <a href="{% url 'cadastrar_colaborador' %}"
+                <a href="{% url 'cadastro_colaborador' %}?next={% url "cadastrar_campanha" %}"
                    onclick="document.getElementById('add-colab').value='1'"
                    class="btn btn-outline-danger btn-sm mt-2">
                     + Cadastrar novo colaborador
@@ -68,7 +70,7 @@
                 <label class="form-label fw-semibold">Pontos de Coleta</label>
                 {{ form.pontos }}
 
-                <a href="{% url 'cadastrar_ponto' %}"
+                <a href="{% url 'cadastrar_ponto' %}?next={% url "cadastrar_campanha" %}"
                    onclick="document.getElementById('add-ponto').value='1'"
                    class="btn btn-outline-danger btn-sm mt-2">
                     + Cadastrar novo ponto de coleta
@@ -85,5 +87,5 @@
 
         </form>
     </div>
-</div>
+</section>
 {% endblock %}
