@@ -10,8 +10,20 @@ class AmostraSangue(models.Model):
         ('reservada', 'Reservada'),
     ]
 
+    TIPO_SANGUINEO_CHOICES = [
+        ('NA', 'Não sei'),
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+    ]
+
     id_amostra = models.BigAutoField(primary_key=True)
-    tipo_sang = models.CharField(max_length=3)
+    tipo_sang = models.CharField(max_length=3, choices=TIPO_SANGUINEO_CHOICES)
     quantidade_ml = models.PositiveIntegerField()
     validade = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='disponivel')

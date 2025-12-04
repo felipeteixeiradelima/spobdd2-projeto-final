@@ -374,34 +374,18 @@ def doacoes_list(request):
     return render(request, "core/doacoes_list.html", {"doacoes": doacoes})
 
 @login_required
-@colaborador_required
 def doacao_create(request):
     if request.method == "POST":
-        form_doacao = DoacaoForm(request.POST)
-        form_amostra = AmostraForm(request.POST)
-
-        if form_doacao.is_valid():
-
-            # criar amostra se marcado
-            if form_doacao.cleaned_data.get("criar_amostra") and form_amostra.is_valid():
-                amostra = form_amostra.save()
-            else:
-                amostra = None
-
-            doacao = form_doacao.save(commit=False)
-            doacao.amostra = amostra
-            doacao.save()
-
-            messages.success(request, "Doação cadastrada com sucesso!")
+        form = DoacaoForm(request.POST)
+        if form.is_valid():
+            form.save()
             return redirect("doacoes_list")
-
     else:
-        form_doacao = DoacaoForm()
-        form_amostra = AmostraForm()
+        form = DoacaoForm()
 
     return render(request, "core/doacao_form.html", {
-        "form_doacao": form_doacao,
-        "form_amostra": form_amostra
+        "form": form,
+        "titulo": "Registrar Doação"
     })
 
 @login_required
@@ -434,7 +418,7 @@ def doacao_delete(request, id_doacao):
     if request.method == "POST":
         doacao.delete()
         messages.success(request, "Doação excluída com sucesso!")
-        return redirect("doacao_list")
+        return redirect("doacoes_list")
 
     return render(request, "core/confirm_delete.html", {
         "obj": doacao,

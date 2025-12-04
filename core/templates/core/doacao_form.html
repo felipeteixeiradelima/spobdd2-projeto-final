@@ -1,14 +1,13 @@
 {% extends "core/base.html" %}
-
 {% load widget_tweaks %}
 
-{% block title %}Nova Doação - Doe Vida{% endblock %}
+{% block title %}{{ titulo }} - Doe Vida{% endblock %}
 
 {% block content %}
-<div class="container py-5 mt-5" style="max-width: 800px;">
+<div class="container py-5 mt-5" style="max-width: 700px;">
 
     <h1 class="fw-bold text-danger mb-4">
-        <i class="bi bi-heart-pulse"></i> Registrar Doação
+        <i class="bi bi-heart-pulse"></i> {{ titulo }}
     </h1>
 
     <div class="card shadow-sm border-0 p-4">
@@ -16,77 +15,35 @@
         <form method="POST">
             {% csrf_token %}
 
-            <h4 class="fw-bold text-danger mb-3">Dados da Doação</h4>
-
             <div class="mb-3">
                 <label class="form-label fw-semibold">Doador</label>
-                {{ form_doacao.doador|add_class:"form-select" }}
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Data da Doação</label>
-                {{ form_doacao.data_doacao|add_class:"form-control" }}
+                {{ form.doador|add_class:"form-select" }}
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">Campanha</label>
-                {{ form_doacao.campanha|add_class:"form-select" }}
+                {{ form.campanha|add_class:"form-select" }}
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">Ponto de Coleta</label>
-                {{ form_doacao.ponto|add_class:"form-select" }}
+                {{ form.ponto|add_class:"form-select" }}
             </div>
 
-            <div class="form-check mb-4">
-                {{ form_doacao.criar_amostra|add_class:"form-check-input" }}
-                <label class="form-check-label">Cadastrar nova amostra agora?</label>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Data da Doação</label>
+                {{ form.data_doacao|add_class:"form-control" }}
             </div>
 
-            <div id="novaAmostra" class="border rounded p-3 bg-light">
-                <h4 class="fw-bold text-danger mb-3">Cadastrar Nova Amostra</h4>
-
-                {{ form_amostra.non_field_errors }}
-
-                <div class="mb-3">
-                    <label class="form-label">Tipo sanguíneo</label>
-                    {{ form_amostra.tipo_sang|add_class:"form-select" }}
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Quantidade (ml)</label>
-                    {{ form_amostra.quantidade_ml|add_class:"form-control" }}
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Validade</label>
-                    {{ form_amostra.validade|add_class:"form-control" }}
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Status</label>
-                    {{ form_amostra.status|add_class:"form-select" }}
-                </div>
-            </div>
-
-            <button class="btn btn-danger w-100 mt-4">
+            <button type="submit" class="btn btn-danger w-100 mt-3">
                 <i class="bi bi-check-circle"></i> Salvar
             </button>
+
+            <a href="{% url 'doacoes_list' %}" class="btn btn-outline-secondary w-100 mt-2">
+                Voltar
+            </a>
         </form>
+
     </div>
-
 </div>
-
-<script>
-const checkbox = document.querySelector("input[name='criar_amostra']");
-const blocoAmostra = document.getElementById("novaAmostra");
-
-function toggleAmostra() {
-    blocoAmostra.style.display = checkbox.checked ? "block" : "none";
-}
-
-toggleAmostra();
-checkbox.addEventListener("change", toggleAmostra);
-</script>
-
 {% endblock %}

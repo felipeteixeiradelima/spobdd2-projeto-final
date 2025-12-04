@@ -196,20 +196,13 @@ class AmostraForm(forms.ModelForm):
             "validade": forms.DateInput(attrs={"type": "date"})
         }
 
-
 class DoacaoForm(forms.ModelForm):
-    criar_amostra = forms.BooleanField(
-        required=False,
-        label="Cadastrar nova amostra agora?"
-    )
-
     class Meta:
         model = Doacao
-        fields = ["data_doacao", "doador", "campanha", "ponto", "amostra"]
+        fields = ['doador', 'campanha', 'ponto', 'data_doacao']
         widgets = {
-            "data_doacao": forms.DateInput(attrs={"type": "date"})
+            'data_doacao': forms.DateInput(attrs={'type': 'date'}),
         }
-
 
 class EditarColaboradorForm(forms.ModelForm):
     email = forms.EmailField(required=True)
